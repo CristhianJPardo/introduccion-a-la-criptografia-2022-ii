@@ -8,44 +8,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
-import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import PublicIcon from '@mui/icons-material/Public';
-import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
-import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
-import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
-import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-
-const categories = [
-    {
-        id: 'Build',
-        children: [
-            {
-                id: 'Authentication',
-                icon: <PeopleIcon />,
-                active: true,
-            },
-            { id: 'Database', icon: <DnsRoundedIcon /> },
-            { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-            { id: 'Hosting', icon: <PublicIcon /> },
-            { id: 'Functions', icon: <SettingsEthernetIcon /> },
-            {
-                id: 'Machine learning',
-                icon: <SettingsInputComponentIcon />,
-            },
-        ],
-    },
-    {
-        id: 'Quality',
-        children: [
-            { id: 'Analytics', icon: <SettingsIcon /> },
-            { id: 'Performance', icon: <TimerIcon /> },
-            { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-        ],
-    },
-];
+import CategoryIcon from '@mui/icons-material/Category';
+import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
 const item = {
     py: '2px',
@@ -69,31 +36,66 @@ export default function Navigator(props) {
         <Drawer variant="permanent" {...other}>
             <List disablePadding>
                 <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-                    Paperbase
+                    MyApp
                 </ListItem>
                 <ListItem sx={{ ...item, ...itemCategory }}>
                     <ListItemIcon>
-                        <HomeIcon />
+                        <CategoryIcon />
                     </ListItemIcon>
                     <ListItemText>Project Overview</ListItemText>
                 </ListItem>
-                {categories.map(({ id, children }) => (
-                    <Box key={id} sx={{ bgcolor: '#101F33' }}>
-                        <ListItem sx={{ py: 2, px: 3 }}>
-                            <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
-                        </ListItem>
-                        {children.map(({ id: childId, icon, active }) => (
-                            <ListItem disablePadding key={childId}>
-                                <ListItemButton selected={active} sx={item}>
-                                    <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText>{childId}</ListItemText>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
 
-                        <Divider sx={{ mt: 2 }} />
-                    </Box>
-                ))}
+                <Box key="Algorithms" sx={{ bgcolor: '#101F33' }}>
+                    <ListItem sx={{ py: 2, px: 3 }}>
+                        <ListItemText sx={{ color: '#fff' }}>Algorithms</ListItemText>
+                    </ListItem>
+
+                    <ListItem disablePadding key="selector">
+                        <ListItemButton selected={false} sx={item}>
+                            <ListItemIcon><DeviceHubIcon /></ListItemIcon>
+                            <ListItemText>Known Algorithm</ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding key="cryptoAnalysis">
+                        <ListItemButton selected={true} sx={item}>
+                            <ListItemIcon><QueryStatsIcon /></ListItemIcon>
+                            <ListItemText>Cryptoanalysis</ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+
+                    <Divider sx={{ mt: 2 }} />
+                </Box>
+
+                <Box key="Other Options" sx={{ bgcolor: '#101F33' }}>
+                    <ListItem sx={{ py: 2, px: 3 }}>
+                        <ListItemText sx={{ color: '#fff' }}>Other Options</ListItemText>
+                    </ListItem>
+
+                    <ListItem disablePadding key="records">
+                        <ListItemButton selected={false} sx={item}>
+                            <ListItemIcon><CenterFocusStrongIcon /></ListItemIcon>
+                            <ListItemText>Records</ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding key="settings">
+                        <ListItemButton selected={false} sx={item}>
+                            <ListItemIcon><SettingsIcon /> </ListItemIcon>
+                            <ListItemText>Settings</ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding key="home">
+                        <ListItemButton selected={false} sx={item}>
+                            <ListItemIcon><HomeIcon /></ListItemIcon>
+                            <ListItemText>Home</ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+
+
+                    <Divider sx={{ mt: 2 }} />
+                </Box>
             </List>
         </Drawer>
     );
