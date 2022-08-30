@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { orange } from '@mui/material/colors';
+// import Popper from '@mui/material';
 
 export default function Grouped() {
 
@@ -33,12 +34,12 @@ export default function Grouped() {
         }
     })
 
-
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider id="theme" theme={theme}>
             <Autocomplete
                 id="grouped-demo"
                 options={options}
+
                 groupBy={(option) => option.category}
                 getOptionLabel={(option) => option.name}
                 onChange={(event, value) => handleSelectedAlgorithm(value)}
@@ -56,9 +57,6 @@ export default function Grouped() {
                         // style: { color: "white" }
                     }} />}
             />
-            {/* <p>
-                {selectedAlgorithm}
-            </p> */}
         </ThemeProvider>
 
     );

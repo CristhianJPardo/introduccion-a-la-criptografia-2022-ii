@@ -16,6 +16,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Grouped from './Grouped';
+import ComboBox from './ComboBox';
 
 export default function SimpleAccordion() {
 
@@ -39,7 +40,8 @@ export default function SimpleAccordion() {
                 </AccordionSummary>
                 <AccordionDetails sx={{ bgcolor: '#101F33', color: "white", py: 1, px: 3, }}>
 
-                    <Grouped />
+                    {/* <Grouped /> */}
+                    <ComboBox />
 
                 </AccordionDetails>
 
