@@ -22,7 +22,7 @@ function Header(props) {
 
     return (
         <React.Fragment>
-            <AppBar color="primary" position="sticky" elevation={0}>
+            <AppBar color="primary" position="sticky" elevation={0} sx={{ background: "linear-gradient(97deg, rgba(16,31,51,1) 28%, rgba(9,9,121,1) 74%, rgba(0,212,255,1) 100%)" }}>
                 <Toolbar>
                     <Grid container spacing={1} alignItems="center">
                         <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>
@@ -36,61 +36,14 @@ function Header(props) {
                             </IconButton>
                         </Grid>
                         <Grid item xs />
-                        <Grid item>
-                            <Link
-                                href="/"
-                                variant="body2"
-                                sx={{
-                                    textDecoration: 'none',
-                                    color: lightColor,
-                                    '&:hover': {
-                                        color: 'common.white',
-                                    },
-                                }}
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                Go to docs
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Tooltip title="Alerts • No alerts">
-                                <IconButton color="inherit">
-                                    <NotificationsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                        <Grid item>
-                            <IconButton color="inherit" sx={{ p: 0.5 }}>
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
-                            </IconButton>
-                        </Grid>
                     </Grid>
                 </Toolbar>
-            </AppBar>
-            <AppBar
-                component="div"
-                color="primary"
-                position="static"
-                elevation={0}
-                sx={{ zIndex: 0 }}
-            >
                 <Toolbar>
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item xs>
                             <Typography color="inherit" variant="h5" component="h1">
-                                Authentication
+                                Algorithm: { }
                             </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                sx={{ borderColor: lightColor }}
-                                variant="outlined"
-                                color="inherit"
-                                size="small"
-                            >
-                                Web setup
-                            </Button>
                         </Grid>
                         <Grid item>
                             <Tooltip title="Help">
@@ -101,13 +54,11 @@ function Header(props) {
                         </Grid>
                     </Grid>
                 </Toolbar>
-            </AppBar>
-            <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
                 <Tabs value={0} textColor="inherit">
-                    <Tab label="Users" />
-                    <Tab label="Sign-in method" />
-                    <Tab label="Templates" />
-                    <Tab label="Usage" />
+                    <Tab label="Info" />
+                    <Tab label="Encrypt" />
+                    <Tab label="Decrypt" />
+                    <Tab label="Attack" />
                 </Tabs>
             </AppBar>
         </React.Fragment>
