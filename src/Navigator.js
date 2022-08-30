@@ -13,6 +13,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import SimpleAccordion from './SimpleAccordion';
 
 const item = {
     py: '2px',
@@ -51,10 +52,12 @@ export default function Navigator(props) {
                     </ListItem>
 
                     <ListItem disablePadding key="selector">
-                        <ListItemButton selected={false} sx={item}>
+                        {/* <ListItemButton selected={false} sx={item}>
                             <ListItemIcon><DeviceHubIcon /></ListItemIcon>
                             <ListItemText>Known Algorithm</ListItemText>
-                        </ListItemButton>
+                            
+                        </ListItemButton> */}
+                        <SimpleAccordion />
                     </ListItem>
 
                     <ListItem disablePadding key="cryptoAnalysis">
