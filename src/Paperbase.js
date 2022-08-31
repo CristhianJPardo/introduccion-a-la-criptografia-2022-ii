@@ -166,7 +166,7 @@ theme = {
 
 const drawerWidth = 290;
 
-export default function Paperbase() {
+export default function Paperbase(props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -188,6 +188,8 @@ export default function Paperbase() {
                             variant="temporary"
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
+                            prop1={props.prop1}
+                            prop2={props.prop2}
                         />
                     )}
 

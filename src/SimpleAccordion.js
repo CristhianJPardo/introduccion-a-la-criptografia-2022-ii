@@ -5,9 +5,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemText from '@mui/material/ListItemText';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
-import ComboBox from './ComboBox';
+import AlgorithmAutocomplete from './AlgorithmAutocomplete';
 
-export default function SimpleAccordion() {
+export default function SimpleAccordion(props) {
 
     return (
         <div>
@@ -29,8 +29,7 @@ export default function SimpleAccordion() {
                 </AccordionSummary>
                 <AccordionDetails sx={{ bgcolor: '#101F33', color: "white", py: 1, px: 3, }}>
 
-                    {/* <Grouped /> */}
-                    <ComboBox />
+                    <AlgorithmAutocomplete />
 
                 </AccordionDetails>
 

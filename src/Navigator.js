@@ -51,7 +51,10 @@ export default function Navigator(props) {
                     </ListItem>
 
                     <ListItem disablePadding key="selector">
-                        <SimpleAccordion />
+                        <SimpleAccordion
+                            prop1={props.prop1}
+                            prop2={props.prop2}
+                        />
                     </ListItem>
 
                     <ListItem disablePadding key="cryptoAnalysis">
