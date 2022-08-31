@@ -2,20 +2,20 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { orange } from '@mui/material/colors';
-// import Popper from '@mui/material';
+// import { orange } from '@mui/material/colors';
+
 
 export default function Grouped() {
 
-    const [selectedAlgorithm, setSelectedAlgorithm] = React.useState("Algo por defecto")
+    // const [selectedAlgorithm, setSelectedAlgorithm] = React.useState("Algo por defecto")
 
-    const handleSelectedAlgorithm = (e) => {
-        if (e !== null) {
-            setSelectedAlgorithm(e.name)
-        } else {
-            setSelectedAlgorithm("algo por defecto")
-        }
-    }
+    // const handleSelectedAlgorithm = (e) => {
+    //     if (e !== null) {
+    //         setSelectedAlgorithm(e.name)
+    //     } else {
+    //         setSelectedAlgorithm("algo por defecto")
+    //     }
+    // }
 
     const options = algorithms.map((option) => {
         const firstLetter = option.name[0].toUpperCase();
