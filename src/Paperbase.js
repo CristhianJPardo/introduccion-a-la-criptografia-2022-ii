@@ -164,7 +164,7 @@ theme = {
     },
 };
 
-const drawerWidth = 250;
+const drawerWidth = 290;
 
 export default function Paperbase() {
     const [mobileOpen, setMobileOpen] = React.useState(false);
