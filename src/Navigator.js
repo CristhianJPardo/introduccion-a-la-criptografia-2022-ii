@@ -51,18 +51,13 @@ export default function Navigator(props) {
                     </ListItem>
 
                     <ListItem disablePadding key="selector">
-                        {/* <ListItemButton selected={false} sx={item}>
-                            <ListItemIcon><DeviceHubIcon /></ListItemIcon>
-                            <ListItemText>Known Algorithm</ListItemText>
-                            
-                        </ListItemButton> */}
                         <SimpleAccordion />
                     </ListItem>
 
                     <ListItem disablePadding key="cryptoAnalysis">
                         <ListItemButton selected={true} sx={item}>
                             <ListItemIcon><QueryStatsIcon /></ListItemIcon>
-                            <ListItemText>Cryptoanalysis</ListItemText>
+                            <ListItemText>Unknown Algorithm</ListItemText>
                         </ListItemButton>
                     </ListItem>
 
