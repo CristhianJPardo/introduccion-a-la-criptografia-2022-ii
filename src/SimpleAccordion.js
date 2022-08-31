@@ -29,7 +29,7 @@ export default function SimpleAccordion() {
                     />}
                     // aria-controls="panel1a-content"
                     id="panel1a-header"
-                    sx={{ bgcolor: '#101F33', color: "white", width: "350px", py: 0, px: 3 }}
+                    sx={{ bgcolor: '#101F33', color: "white", width: "300px", py: 0, px: 3 }}
                 >
                     <DeviceHubIcon />
                     <ListItemText

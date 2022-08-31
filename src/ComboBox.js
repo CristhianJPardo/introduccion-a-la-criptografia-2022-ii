@@ -2,20 +2,31 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { createTheme, ThemeProvider } from '@mui/material';
+// import { orange } from '@mui/material/colors';
+
 export default function ComboBox() {
 
+    const theme = createTheme({
+        palette: {
+            mode: "dark",
+            // primary: {
+            //     main: orange[500]
+            // }
+        }
+    })
+
     return (
-
-        <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={algorithms}
-            groupBy={(option) => option.category}
-            color="secondary"
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Select the algoritm" />}
-        />
-
+        <ThemeProvider theme={theme}>
+            <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={algorithms}
+                groupBy={(option) => option.category}
+                color="secondary"
+                sx={{ width: 200 }}
+                renderInput={(params) => <TextField {...params} label="Select the algoritm" />}
+            />
+        </ThemeProvider>
     );
 }
 
