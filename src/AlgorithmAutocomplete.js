@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { createTheme, ThemeProvider } from '@mui/material';
-import Typography from '@mui/material/Typography';
 
 const AlgorithmAutocomplete = (props) => {
     const [selectedAlgorithm2, setSelectedAlgorithm2] = useState(null);

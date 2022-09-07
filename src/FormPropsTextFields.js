@@ -2,24 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 
 export default function FormPropsTextFields() {
-
-  const letters = "abcdefghijklmnopqrstuvwxyz"
-
-  const shiftCipher = (text, n) => {
-    text = text.replace(/\s/g, "")
-    text = text.toLowerCase()
-    let encryptedText = ""
-    for (let i = 0; i < text.length; i++) {
-      let char = text.charAt(i)
-      let aux = (letters.indexOf(char) + n) % 26
-      let encryptedChar = letters.charAt(aux)
-      encryptedText = encryptedText + encryptedChar
-    }
-    return encryptedText
-  }
 
   return (
 

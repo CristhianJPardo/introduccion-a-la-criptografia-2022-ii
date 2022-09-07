@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './Navigator';
-import Content from './Content';
 import Header from './Header';
 
 import { InitialInfo } from './InitialInfo';
@@ -206,8 +205,8 @@ const drawerWidth = 290;
 const renderSwitch = (param1, param2) => {
     switch (true) {
 
-        case ((param1 == null || param1 == "none")):
-            return <InitialInfo />
+        // case ((param1 === null || param1 === "none")):
+        //     return <InitialInfo />
 
         case (param1 === "Shift" && param2 === "1"):
             return <ShiftInfo />
@@ -262,7 +261,8 @@ const renderSwitch = (param1, param2) => {
             return <VigenereDecrypt />
         case (param1 === "Vigenere" && param2 === "4"):
             return <VigenereAttack />
-
+        default:
+            return <InitialInfo />
     }
 }
 

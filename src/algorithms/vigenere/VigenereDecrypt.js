@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
-import { MathComponent } from "mathjax-react";
 import Divider from '@mui/material/Divider';
 import { Typography } from '@mui/material';
 export const VigenereDecrypt = () => {

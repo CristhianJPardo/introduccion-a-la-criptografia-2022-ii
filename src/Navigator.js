@@ -9,9 +9,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import CategoryIcon from '@mui/icons-material/Category';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import SimpleAccordion from './SimpleAccordion';
 
 
