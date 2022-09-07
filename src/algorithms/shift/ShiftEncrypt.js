@@ -21,20 +21,11 @@ export const ShiftEncrypt = () => {
     const initialEncryptedText = ""
     const [encryptedText, setEncryptedText] = React.useState(initialEncryptedText)
 
-    const [, forceUpdate] = React.useReducer(x => x + 1, 0)
-
-
     const changeEncryptedText = (text) => {
         let encryptedText = caesarCipher(text, parseInt(nState))
         setEncryptedText(encryptedText.toUpperCase())
     }
 
-    const changeNState = (n) => {
-        // if (error) 
-        {
-            setNState(n)
-        }
-    }
     const caesarCipher = (text, n) => {
         text = text.replace(/[^a-zA-Z]/g, '')
         text = text.toLowerCase()
@@ -84,7 +75,7 @@ export const ShiftEncrypt = () => {
                     // }}
                     onChange={e => {
                         validateAlphabeticAndSpace(e.target.value);
-                        changeNState(e.target.value)
+                        setNState(e.target.value)
 
                     }}
                     disabled={paramsFixed}
