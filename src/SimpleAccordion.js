@@ -9,32 +9,39 @@ import AlgorithmAutocomplete from './AlgorithmAutocomplete';
 
 export default function SimpleAccordion(props) {
 
+    // const [estado, setEstado] = React.useState("Estado prueba")
+
+
     return (
-        <div>
-            <Accordion disableGutters elevation={0} square>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon
-                        sx={{ color: "white" }}
-                    />}
-                    // aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    sx={{ bgcolor: '#101F33', color: "white", width: "300px", py: 0, px: 3 }}
+
+        <Accordion disableGutters elevation={0} square>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon
+                    sx={{ color: "white" }}
+                />}
+                // aria-controls="panel1a-content"
+                id="panel1a-header"
+                sx={{ bgcolor: '#101F33', color: "white", width: "290px", py: 0, px: 3 }}
+            >
+                <DeviceHubIcon />
+                <ListItemText
+                    sx={{ pl: 1.5 }}
                 >
-                    <DeviceHubIcon />
-                    <ListItemText
-                        sx={{ pl: 1.5 }}
-                    >
-                        Known Algorithm
-                    </ListItemText>
-                </AccordionSummary>
-                <AccordionDetails sx={{ bgcolor: '#101F33', color: "white", py: 1, px: 3, }}>
+                    Known Algorithm
+                    {/* {props.prop1} */}
+                </ListItemText>
+            </AccordionSummary>
+            <AccordionDetails sx={{ bgcolor: '#101F33', py: 1, px: 3, }}>
 
-                    <AlgorithmAutocomplete />
+                <AlgorithmAutocomplete
+                    prop1={props.prop1}
+                    prop2={props.prop2}
+                />
 
-                </AccordionDetails>
+            </AccordionDetails>
 
-            </Accordion>
+        </Accordion>
 
-        </div>
+
     );
 }

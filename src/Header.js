@@ -10,9 +10,12 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import LabTabs from './LabTabs';
+import InitialLabTabs from './InitialLabTabs';
 
 function Header(props) {
-    const { onDrawerToggle } = props;
+
+    const { onDrawerToggle, ...other } = { ...props };
 
     return (
         <React.Fragment>
@@ -36,7 +39,7 @@ function Header(props) {
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item xs>
                             <Typography color="inherit" variant="h5" component="h1">
-                                Algorithm: { }
+                                {(other.prop1 == "none" || other.prop1 == null) ? "Welcome to MyApp!" : `Algorithm: ${other.prop1}`}
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -48,12 +51,10 @@ function Header(props) {
                         </Grid>
                     </Grid>
                 </Toolbar>
-                <Tabs value={0} textColor="inherit">
-                    <Tab label="Info" />
-                    <Tab label="Encrypt" />
-                    <Tab label="Decrypt" />
-                    <Tab label="Attack" />
-                </Tabs>
+                {(other.prop1 == null || other.prop1 == "none") ? <InitialLabTabs /> : <LabTabs
+                    prop3={other.prop3}
+                    prop4={other.prop4}
+                />}
             </AppBar>
         </React.Fragment>
     );

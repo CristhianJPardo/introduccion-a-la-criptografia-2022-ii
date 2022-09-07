@@ -9,6 +9,43 @@ import Navigator from './Navigator';
 import Content from './Content';
 import Header from './Header';
 
+import { InitialInfo } from './InitialInfo';
+
+import { ShiftInfo } from './algorithms/shift/ShiftInfo';
+import { ShiftAttack } from './algorithms/shift/ShiftAttack';
+import { ShiftEncrypt } from './algorithms/shift/ShiftEncrypt'
+import { ShiftDecrypt } from './algorithms/shift/ShiftDecrypt';
+
+import { AffineInfo } from './algorithms/affine/AffineInfo';
+import { AffineAttack } from './algorithms/affine/AffineAttack';
+import { AffineEncrypt } from './algorithms/affine/AffineEncrypt'
+import { AffineDecrypt } from './algorithms/affine/AffineDecrypt';
+
+import { SubstitutionInfo } from './algorithms/substitution/SubstitutionInfo';
+import { SubstitutionAttack } from './algorithms/substitution/SubstitutionAttack';
+import { SubstitutionEcrypt } from './algorithms/substitution/SubstitutionEcrypt'
+import { SubstitutionDecrypt } from './algorithms/substitution/SubstitutionDecrypt';
+
+import { HillInfo } from './algorithms/hill/HillInfo';
+import { HillAttack } from './algorithms/hill/HillAttack';
+import { HillEncrypt } from './algorithms/hill/HillEncrypt'
+import { HillDecrypt } from './algorithms/hill/HillDecrypt';
+
+import { PermutationInfo } from './algorithms/permutation/PermutationInfo';
+import { PermutationAttack } from './algorithms/permutation/PermutationAttack';
+import { PermutationEncrypt } from './algorithms/permutation/PermutationEncrypt'
+import { PermutationDecrypt } from './algorithms/permutation/PermutationDecrypt';
+
+import { VigenereInfo } from './algorithms/vigenere/VigenereInfo';
+import { VigenereAttack } from './algorithms/vigenere/VigenereAttack';
+import { VigenereEncrypt } from './algorithms/vigenere/VigenereEncrypt'
+import { VigenereDecrypt } from './algorithms/vigenere/VigenereDecrypt';
+
+
+
+
+
+
 function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
@@ -166,6 +203,69 @@ theme = {
 
 const drawerWidth = 290;
 
+const renderSwitch = (param1, param2) => {
+    switch (true) {
+
+        case ((param1 == null || param1 == "none")):
+            return <InitialInfo />
+
+        case (param1 === "Shift" && param2 === "1"):
+            return <ShiftInfo />
+        case (param1 === "Shift" && param2 === "2"):
+            return <ShiftEncrypt />
+        case (param1 === "Shift" && param2 === "3"):
+            return <ShiftDecrypt />
+        case (param1 === "Shift" && param2 === "4"):
+            return <ShiftAttack />
+
+        case (param1 === "Affine" && param2 === "1"):
+            return <AffineInfo />
+        case (param1 === "Affine" && param2 === "2"):
+            return <AffineEncrypt />
+        case (param1 === "Affine" && param2 === "3"):
+            return <AffineDecrypt />
+        case (param1 === "Affine" && param2 === "4"):
+            return <AffineAttack />
+
+        case (param1 === "Substitution" && param2 === "1"):
+            return <SubstitutionInfo />
+        case (param1 === "Substitution" && param2 === "2"):
+            return <SubstitutionEcrypt />
+        case (param1 === "Substitution" && param2 === "3"):
+            return <SubstitutionDecrypt />
+        case (param1 === "Substitution" && param2 === "4"):
+            return <SubstitutionAttack />
+
+        case (param1 === "Hill" && param2 === "1"):
+            return <HillInfo />
+        case (param1 === "Hill" && param2 === "2"):
+            return <HillEncrypt />
+        case (param1 === "Hill" && param2 === "3"):
+            return <HillDecrypt />
+        case (param1 === "Hill" && param2 === "4"):
+            return <HillAttack />
+
+        case (param1 === "Permutation" && param2 === "1"):
+            return <PermutationInfo />
+        case (param1 === "Permutation" && param2 === "2"):
+            return <PermutationEncrypt />
+        case (param1 === "Permutation" && param2 === "3"):
+            return <PermutationDecrypt />
+        case (param1 === "Permutation" && param2 === "4"):
+            return <PermutationAttack />
+
+        case (param1 === "Vigenere" && param2 === "1"):
+            return <VigenereInfo />
+        case (param1 === "Vigenere" && param2 === "2"):
+            return <VigenereEncrypt />
+        case (param1 === "Vigenere" && param2 === "3"):
+            return <VigenereDecrypt />
+        case (param1 === "Vigenere" && param2 === "4"):
+            return <VigenereAttack />
+
+    }
+}
+
 export default function Paperbase(props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
@@ -184,24 +284,40 @@ export default function Paperbase(props) {
                 >
                     {isSmUp ? null : (
                         <Navigator
+                            // isSmUp={isSmUp}
                             PaperProps={{ style: { width: drawerWidth } }}
                             variant="temporary"
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
                             prop1={props.prop1}
                             prop2={props.prop2}
+                            prop3={props.prop3}
+                        // prop4={props.prop4}
                         />
                     )}
 
                     <Navigator
                         PaperProps={{ style: { width: drawerWidth } }}
                         sx={{ display: { sm: 'block', xs: 'none' } }}
+                        prop1={props.prop1}
+                        prop2={props.prop2}
+                        prop3={props.prop3}
+                    // prop4={props.prop4}
                     />
                 </Box>
                 <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Header onDrawerToggle={handleDrawerToggle} />
+                    <Header
+                        onDrawerToggle={handleDrawerToggle}
+                        prop1={props.prop1}
+                        prop2={props.prop2}
+                        prop3={props.prop3}
+                        prop4={props.prop4}
+
+                    />
                     <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                        <Content />
+
+                        {renderSwitch(props.prop1, props.prop3)}
+
                     </Box>
                     <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
                         <Copyright />

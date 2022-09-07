@@ -1,23 +1,20 @@
 import { useState } from "react";
 import Paperbase from "./Paperbase";
 
-
-
 function App() {
 
-  const globalObj = {
-    defaultTitle: "Welcome to MyApp!",
-  }
-
-  const [global, setGlobal] = useState(globalObj)
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState("none")
+  const [selectedTab, setSelectedTab] = useState("1")
 
   return (
-    <div className="App">
-      <Paperbase
-        prop1={setGlobal}
-        prop2={global}
-      />
-    </div>
+
+    <Paperbase
+      prop1={selectedAlgorithm}
+      prop2={setSelectedAlgorithm}
+      prop3={selectedTab}
+      prop4={setSelectedTab}
+    />
+
   );
 }
 

@@ -14,11 +14,15 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import SimpleAccordion from './SimpleAccordion';
 
+
 const item = {
     py: '2px',
     px: 3,
-    color: 'rgba(255, 255, 255, 0.7)',
-    '&:hover, &:focus': {
+    color: 'rgba(255, 255, 255, 0.8)',
+    '&:hover': {
+        color: "#4fc3f7"
+    },
+    '&:focus': {
         bgcolor: 'rgba(255, 255, 255, 0.08)',
     },
 };
@@ -30,20 +34,24 @@ const itemCategory = {
 };
 
 export default function Navigator(props) {
-    const { ...other } = props;
+    const { prop1, prop2, ...other } = { ...props };
 
     return (
-        <Drawer variant="permanent" {...other}>
+        <Drawer
+            variant="permanent"
+            {...other}
+
+        >
             <List disablePadding>
-                <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
+                <ListItem sx={{ ...item, ...itemCategory, fontSize: 25, color: '#fff', mt: 1.5, pb: 3 }}>
                     MyApp
                 </ListItem>
-                <ListItem sx={{ ...item, ...itemCategory }}>
+                {/* <ListItem sx={{ ...item, ...itemCategory }}>
                     <ListItemIcon>
                         <CategoryIcon />
                     </ListItemIcon>
                     <ListItemText>Project Overview</ListItemText>
-                </ListItem>
+                </ListItem> */}
 
                 <Box key="Algorithms" sx={{ bgcolor: '#101F33' }}>
                     <ListItem sx={{ py: 2, px: 3 }}>
@@ -51,18 +59,27 @@ export default function Navigator(props) {
                     </ListItem>
 
                     <ListItem disablePadding key="selector">
-                        <SimpleAccordion
-                            prop1={props.prop1}
-                            prop2={props.prop2}
-                        />
+                        <ListItemButton selected={true} sx={{ p: 0 }}>
+
+                            <SimpleAccordion
+                                prop1={props.prop1}
+                                prop2={props.prop2}
+                            />
+
+                        </ListItemButton>
+
                     </ListItem>
 
-                    <ListItem disablePadding key="cryptoAnalysis">
-                        <ListItemButton selected={true} sx={item}>
+                    {/* <ListItem disablePadding key="cryptoAnalysis">
+                        <ListItemButton
+                            selected={false}
+                            sx={item}
+                        // onClick={(e) => { selected: true }}
+                        >
                             <ListItemIcon><QueryStatsIcon /></ListItemIcon>
                             <ListItemText>Unknown Algorithm</ListItemText>
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
 
                     <Divider sx={{ mt: 2 }} />
                 </Box>
@@ -72,12 +89,12 @@ export default function Navigator(props) {
                         <ListItemText sx={{ color: '#fff' }}>Other Options</ListItemText>
                     </ListItem>
 
-                    <ListItem disablePadding key="records">
+                    {/* <ListItem disablePadding key="records">
                         <ListItemButton selected={false} sx={item}>
                             <ListItemIcon><CenterFocusStrongIcon /></ListItemIcon>
                             <ListItemText>Records</ListItemText>
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
 
                     <ListItem disablePadding key="settings">
                         <ListItemButton selected={false} sx={item}>
