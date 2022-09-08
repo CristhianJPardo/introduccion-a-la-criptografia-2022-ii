@@ -31,7 +31,7 @@ const itemCategory = {
 };
 
 export default function Navigator(props) {
-    const { prop1, prop2, ...other } = { ...props };
+    const { prop1, prop2, prop3, prop4, ...other } = { ...props };
 
     return (
         <Drawer
@@ -61,6 +61,8 @@ export default function Navigator(props) {
                             <SimpleAccordion
                                 prop1={props.prop1}
                                 prop2={props.prop2}
+                                prop3={props.prop3}
+                                prop4={props.prop4}
                             />
 
                         </ListItemButton>

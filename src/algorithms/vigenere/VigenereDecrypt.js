@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider';
 import { Typography } from '@mui/material';
 export const VigenereDecrypt = () => {
     return (
-        <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden', pl: 2, textAlign: "left" }}>
+        <Paper sx={{ width: "auto", margin: 'auto', overflow: 'hidden', pl: 2, textAlign: "left" }}>
             <Typography
                 variant='h5'
                 sx={{ mt: 2 }}

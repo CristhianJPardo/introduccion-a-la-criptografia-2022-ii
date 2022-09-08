@@ -43,6 +43,7 @@ const AlgorithmAutocomplete = (props) => {
                 onChange={(_event, newAlgo) => {
                     setSelectedAlgorithm2(newAlgo);
                     props.prop2(newAlgo?.name);
+                    props.prop4("1");
                 }}
             />
 

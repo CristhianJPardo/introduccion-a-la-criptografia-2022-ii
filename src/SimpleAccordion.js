@@ -21,7 +21,7 @@ export default function SimpleAccordion(props) {
                 />}
                 // aria-controls="panel1a-content"
                 id="panel1a-header"
-                sx={{ bgcolor: '#101F33', color: "white", width: "290px", py: 0, px: 3 }}
+                sx={{ bgcolor: '#101F33', color: "white", width: "288px", py: 0, px: 3 }}
             >
                 <DeviceHubIcon />
                 <ListItemText
@@ -36,6 +36,8 @@ export default function SimpleAccordion(props) {
                 <AlgorithmAutocomplete
                     prop1={props.prop1}
                     prop2={props.prop2}
+                    prop3={props.prop3}
+                    prop4={props.prop4}
                 />
 
             </AccordionDetails>

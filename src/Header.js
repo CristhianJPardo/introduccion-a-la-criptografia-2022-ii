@@ -37,7 +37,7 @@ function Header(props) {
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item xs>
                             <Typography color="inherit" variant="h5" component="h1">
-                                {(other.prop1 === "none" || other.prop1 === null) ? "Welcome to MyApp!" : `Algorithm: ${other.prop1}`}
+                                {(other.prop1 === "none" || other.prop1 == null) ? "Welcome to MyApp!" : `Algorithm: ${other.prop1}`}
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -49,7 +49,7 @@ function Header(props) {
                         </Grid>
                     </Grid>
                 </Toolbar>
-                {(other.prop1 === null || other.prop1 === "none") ? <InitialLabTabs /> : <LabTabs
+                {(other.prop1 == null || other.prop1 === "none") ? <InitialLabTabs /> : <LabTabs
                     prop3={other.prop3}
                     prop4={other.prop4}
                 />}

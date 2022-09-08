@@ -21,6 +21,7 @@ export default function InitialLabTabs(props) {
                         }}
                         aria-label="lab API tabs example"
 
+
                     >
                         <Tab
                             label="Info"

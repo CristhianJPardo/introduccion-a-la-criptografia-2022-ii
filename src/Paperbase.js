@@ -202,16 +202,18 @@ theme = {
 
 const drawerWidth = 290;
 
-const renderSwitch = (param1, param2) => {
+const renderSwitch = (param1, param2, param3) => {
     switch (true) {
 
-        // case ((param1 === null || param1 === "none")):
+        // case ((param1 == null || param1 == "none")):
         //     return <InitialInfo />
 
         case (param1 === "Shift" && param2 === "1"):
             return <ShiftInfo />
         case (param1 === "Shift" && param2 === "2"):
-            return <ShiftEncrypt />
+            return <ShiftEncrypt
+                isSmUp={param3}
+            />
         case (param1 === "Shift" && param2 === "3"):
             return <ShiftDecrypt />
         case (param1 === "Shift" && param2 === "4"):
@@ -302,7 +304,7 @@ export default function Paperbase(props) {
                         prop1={props.prop1}
                         prop2={props.prop2}
                         prop3={props.prop3}
-                    // prop4={props.prop4}
+                        prop4={props.prop4}
                     />
                 </Box>
                 <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -316,7 +318,7 @@ export default function Paperbase(props) {
                     />
                     <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
 
-                        {renderSwitch(props.prop1, props.prop3)}
+                        {renderSwitch(props.prop1, props.prop3, isSmUp)}
 
                     </Box>
                     <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>

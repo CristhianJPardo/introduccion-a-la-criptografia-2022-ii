@@ -4,9 +4,16 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
-export const ShiftEncrypt = () => {
+export const ShiftEncrypt = (props) => {
+
+    // const [width, height] = useWindowSize()
+    // const onlyWidth = useWindowWidth()
+    // const onlyHeight = useWindowHeight()
 
     const letters = "abcdefghijklmnopqrstuvwxyz"
 
@@ -45,9 +52,17 @@ export const ShiftEncrypt = () => {
 
     }
 
+    // const calculatedWidth = props.isSmUp ? width - 400 : width - 100
+
     return (
 
-        <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden', pl: 2, pr: 2 }}>
+        <Paper sx={{
+            width: "auto",
+            margin: 'auto',
+            overflow: 'hidden',
+            pl: 2,
+            pr: 2
+        }}>
             <Typography
                 variant='h5'
                 sx={{ mt: 2 }}
@@ -161,19 +176,34 @@ export const ShiftEncrypt = () => {
 
                 }}
             >
-                <Box
-                    sx={{
-                        width: "90%",
-                        bgcolor: "#ccc",
-                        borderRadius: "8px",
-                        p: 2,
-                        mb: 3,
-                        height: "auto",
-                        overflowY: "auto",
-                    }}
-                >
-                    {encryptedText}
-                </Box>
+                <Grid container alignItems="center">
+                    <Box
+                        sx={{
+                            width: "60vw",
+                            maxWidth: "65vw",
+                            bgcolor: "#ccc",
+                            borderRadius: "8px",
+                            p: 2,
+                            mb: 3,
+                            ml: 5,
+                            mt: 3,
+                            height: "auto",
+                            // overflowY: "auto",
+                            overflowWrap: 'break-word'
+                        }}
+                    >
+                        {encryptedText}
+                    </Box>
+                    <Tooltip title="Copy to Clipboard">
+                        <IconButton
+                            onClick={() => {
+                                navigator.clipboard.writeText(encryptedText)
+                            }}
+                        >
+                            <ContentCopyIcon sx={{ m: 0 }} />
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
 
             </Box>
         </Paper>
