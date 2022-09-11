@@ -139,13 +139,12 @@ export const AffineEncrypt = (props) => {
                     <Tooltip title="Generate random key">
                         <IconButton sx={{ mt: 1 }}
                             disabled={paramsFixed}
+                            onClick={() => {
+                                setA(generateRandomA());
+                                setErrorA(true);
+                            }}
                         >
                             <CasinoIcon
-                                onClick={() => {
-                                    setA(generateRandomA());
-                                    setErrorA(true);
-                                }}
-
                             />
                         </IconButton>
                     </Tooltip>

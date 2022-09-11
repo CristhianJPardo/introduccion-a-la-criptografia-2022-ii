@@ -156,7 +156,7 @@ export const AffineDecrypt = (props) => {
             <Typography
                 variant='h5'
                 sx={{ mt: 2 }}
-            >Affine: Encrypt</Typography>
+            >Affine: Decrypt</Typography>
             <Divider sx={{ mt: 1, mb: 1 }} />
             <Typography variant='h6'>Parameters:</Typography>
             <Box
@@ -186,13 +186,12 @@ export const AffineDecrypt = (props) => {
                     <Tooltip title="Generate random key">
                         <IconButton sx={{ mt: 1 }}
                             disabled={paramsFixed}
+                            onClick={() => {
+                                setA(generateRandomA());
+                                setErrorA(true);
+                            }}
                         >
                             <CasinoIcon
-                                onClick={() => {
-                                    setA(generateRandomA());
-                                    setErrorA(true);
-                                }}
-
                             />
                         </IconButton>
                     </Tooltip>
