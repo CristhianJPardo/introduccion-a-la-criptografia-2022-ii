@@ -10,7 +10,7 @@ export default function LabTabs(props) {
 
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
-            <TabContext value={value}>
+            <TabContext value={props.prop3}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
                     {/* {props.prop3} */}

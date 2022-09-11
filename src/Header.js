@@ -38,6 +38,7 @@ function Header(props) {
                         <Grid item xs>
                             <Typography color="inherit" variant="h5" component="h1">
                                 {(other.prop1 === "none" || other.prop1 == null) ? "Welcome to MyApp!" : `Algorithm: ${other.prop1}`}
+                                {`\n--DEBUG--algo: ${other.prop1}--tab: ${other.prop3}`}
                             </Typography>
                         </Grid>
                         <Grid item>
