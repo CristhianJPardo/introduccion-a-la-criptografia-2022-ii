@@ -136,7 +136,10 @@ export const AffineDecrypt = (props) => {
 
     const validateA = (x) => {
         let bool1 = /^-?[1-9]+[0-9]*$/.test(x)
-        let bool2 = (gcd(x, 26) == 1)
+        let bool2 = false
+        if (!isNaN(parseInt(x))) {
+            bool2 = (gcd(x, 26) == 1)
+        }
         let bool = (bool1 && bool2)
         setErrorA(bool);
     }

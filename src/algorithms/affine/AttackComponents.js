@@ -59,7 +59,7 @@ export const AttackComponents = (props) => {
                 >
                     <IconButton
                         onClick={() => {
-                            navigator.clipboard.writeText("ola k ase")
+                            navigator.clipboard.writeText(props.content)
                         }}
 
                     >
