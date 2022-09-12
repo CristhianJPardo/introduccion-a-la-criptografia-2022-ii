@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { Grid, Box } from '@mui/material'
-
-function DragDrop() {
-
+function DragDrop2() {
 
     const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -12,19 +10,17 @@ function DragDrop() {
     const handleChange = (file) => {
         setFile(file);
         setImageData({ data: URL.createObjectURL(file) });
-        // console.log(file.type);
-        // console.log(file)
+        console.log(file.type);
+        console.log(file)
     };
-
 
     return (
         <Box>
             <FileUploader handleChange={handleChange} name="file" types={fileTypes} />
             <img key="1" src={imageData.data} />
             {imageData.data}
-
         </Box>
     );
 }
 
-export default DragDrop;
+export default DragDrop2;

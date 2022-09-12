@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import DragDrop from './components/DragDrop';
 import UploadImages from './components/UploadImages';
 
+
 export const HillEncrypt = () => {
     return (
         <Paper sx={{ width: "auto", margin: 'auto', overflow: 'hidden', pl: 2, textAlign: "left" }}>
