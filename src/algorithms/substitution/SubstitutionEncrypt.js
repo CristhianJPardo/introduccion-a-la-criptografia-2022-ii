@@ -20,11 +20,22 @@ export const SubstitutionEncrypt = (props) => {
     const [clearText, setClearText] = React.useState("")
     const [errorAlphabet, setErrorAlphabet] = React.useState(false)
     const [paramsFixed, setParamsFixed] = React.useState(false)
-    const [encryptedText, setEncryptedText] = React.useState("")
+    const [encryptedTextInput, setEncryptedTextInput] = React.useState("")
+    const [encryptedTextOutput, setEncryptedTextOutput] = React.useState("")
 
-    const changeEncryptedText = (text) => {
-        let encryptedText = (text, alphabet)
-        setEncryptedText(encryptedText.toUpperCase())
+    const changeEncryptedTextOutput = (text) => {
+        text = text.replace(/[^a-zA-Z]/g, '')
+        text = text.toLowerCase()
+        let clearTextList = text.split("")
+
+        let encryptedTextList = []
+        for (let char in clearTextList) {
+            char = clearTextList[char]
+            let index = letters.indexOf(char)
+            let encryptedChar = alphabet[index]
+            encryptedTextList.push(encryptedChar)
+        }
+        setEncryptedTextOutput(encryptedTextList.join("").toUpperCase())
     }
 
     const validateAlphabet = (text) => {
@@ -45,15 +56,6 @@ export const SubstitutionEncrypt = (props) => {
         setErrorAlphabet(bool)
     }
 
-    const handleChangeOnA = (x) => {
-        x = x.replace(/[^a-zA-Z]/g, '')
-
-        let letras = x.split("")
-        let indices = letras.map((letra, i) => {
-            letters.indexOf(letra)
-        })
-        setAlphabet(x)
-    }
     //
     const boxItems = alphabet.split("").map((letraCifrada, i) => {
         if (i < 26) {
@@ -96,7 +98,7 @@ export const SubstitutionEncrypt = (props) => {
                     <TextField
                         id="param1"
                         label='Enter the substitution list'
-                        placeholder="1"
+                        placeholder="zyxwvutsrqponmlkjihgfedcba"
                         helperText="Must be an string of lenght 26 (with chars in range a-z) without repeated chars"
                         sx={{ width: "300px", mb: 2, ml: 5 }}
                         onChange={e => {
@@ -149,12 +151,11 @@ export const SubstitutionEncrypt = (props) => {
                         onClick={() => {
                             // alert("intentando reiniciar");
                             setAlphabet("");
-
                             setErrorAlphabet(false);
-
                             setParamsFixed(false);
-                            setEncryptedText("")
-                            setClearText("")
+                            setEncryptedTextInput("");
+                            setEncryptedTextOutput("");
+                            setClearText("");
                         }}
                     >
                         Reset
@@ -178,10 +179,12 @@ export const SubstitutionEncrypt = (props) => {
                     placeholder="attack at down"
                     helperText="The special characters will be removed, in addition, the letters will be covered to lowercase"
                     onChange={e => {
-                        setClearText(e.target.value);
-                        changeEncryptedText(e.target.value);
+                        setEncryptedTextInput(e.target.value);
+                        console.log(encryptedTextOutput);
+                        changeEncryptedTextOutput(e.target.value)
+                        console.log(encryptedTextOutput);
                     }}
-                    value={clearText}
+                    value={encryptedTextInput}
                     disabled={!paramsFixed}
                 />
             </Box>
@@ -212,12 +215,12 @@ export const SubstitutionEncrypt = (props) => {
                             overflowWrap: 'break-word'
                         }}
                     >
-                        {encryptedText}
+                        {encryptedTextOutput}
                     </Box>
                     <Tooltip title="Copy to Clipboard">
                         <IconButton
                             onClick={() => {
-                                navigator.clipboard.writeText(encryptedText)
+                                navigator.clipboard.writeText(encryptedTextOutput)
                             }}
                         >
                             <ContentCopyIcon sx={{ m: 0 }} />
