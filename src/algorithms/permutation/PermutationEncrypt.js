@@ -31,11 +31,61 @@ export const PermutationEncrypt = (props) => {
     const validatePermutation = (input) => {
         let isNumber = /^-?[1-9]+[0-9]*$/.test(input);
         let key = Array.from(input.toString()).map(Number);
-        let expectedKey = Array.from({length: key.length}, (_, i) => i + 1)
-        let validKey = JSON.stringify(key.sort())===JSON.stringify(expectedKey);
-        let validLength = key.length>=2 && key.length<=6;
+        let expectedKey = Array.from({ length: key.length }, (_, i) => i + 1)
+        let validKey = JSON.stringify(key.sort()) === JSON.stringify(expectedKey);
+        let validLength = key.length >= 2 && key.length <= 6;
         setError(isNumber && validKey && validLength);
     }
+
+    let numbers = "x123456"
+
+    const Boxes = (props) => {
+        return (
+            <Box sx={{ display: 'grid', gridTemplateRows: "1fr 1fr", textAlign: 'center' , mt:1.5}}>
+                <Box sx={{
+                    border: "1px solid black", width: "100%", px: 1, textAlign: 'center',
+                    fontSize: '0.875rem', bgcolor: 'grey.50', borderColor: 'grey.300',
+                    fontFamily: '"Helvetica Neue"', fontWeight: 'medium', fontStyle: props.style
+                }
+                }>
+                    {props.x}
+                </Box>
+                <Box sx={{
+                    border: "1px solid black", width: "100%", px: 1, textAlign: 'center',
+                    fontSize: '0.875rem', bgcolor: 'grey.50', borderColor: 'grey.300', 
+                    fontFamily: '"Helvetica Neue"', fontWeight: 'medium', fontStyle: props.style
+                }
+                }>
+                    {props.permutx}
+                </Box>
+            </Box>
+
+        )
+    }
+
+    const boxItems = ("\u03C0" + nState).split("").map((permutx, i) => {
+        if (i <= 6) {
+            if (i == 0) {
+                return (
+                    <Boxes
+                        key={i.toString()}
+                        x={numbers[i]}
+                        permutx={"\u03C0" + "(x)"}
+                        style={'italic'}
+                    />
+                )
+            } else {
+                return (
+                    <Boxes
+                        key={i.toString()}
+                        x={numbers[i]}
+                        permutx={permutx}
+                        style={'normal'}
+                    />
+                )
+            }
+        }
+    })
 
     return (
 
@@ -82,14 +132,10 @@ export const PermutationEncrypt = (props) => {
 
                 />
 
-                {/* Debuggeando */}
-                {/* {error.toString()}
-                    <br />
-                    {nState}
-                    <br />
-                    {paramsFixed.toString()}
-                    <br />
-                    {nState} */}
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', mb: 2 }}>
+                    {boxItems}
+                </Box>
+
                 <Box sx={{ mb: 0 }}>
                     <Button
                         variant="contained"
