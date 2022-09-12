@@ -12,7 +12,8 @@ export const ShiftInfo = () => {
     const tex3 = String.raw`\ K \in \mathbb{ Z } _n`;
     const tex4 = String.raw`\ e_k(x) \equiv x + K \pmod n `;
     const tex5 = String.raw`\ d_k(y) \equiv y - K \pmod n `;
-    const tex6 = String.raw`\ d_k(e_k(x)) \equiv d_k(x + K) \equiv(x + K) - K \equiv x \pmod n`;
+    const tex6 = String.raw`\ d_k(e_k(x)) \equiv d_k(x + K) \equiv`;
+    const tex8 = String.raw`\ (x + K) - K \equiv x \pmod n`
     const tex7 = String.raw`\ n=26`
     return (
 
@@ -40,7 +41,9 @@ export const ShiftInfo = () => {
                 <br />
                 <MathComponent tex={tex5} display={false} />, so:
                 <br />
-                <MathComponent tex={tex6} display={false} />.
+                <MathComponent tex={tex6} display={false} />
+                <br />
+                <MathComponent tex={tex8} display={false} />.
                 <br />
                 In the following sections,
                 <MathComponent tex={tex7} display={false} />.

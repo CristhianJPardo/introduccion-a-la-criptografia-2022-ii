@@ -22,7 +22,7 @@ import { AffineDecrypt } from './algorithms/affine/AffineDecrypt';
 
 import { SubstitutionInfo } from './algorithms/substitution/SubstitutionInfo';
 import { SubstitutionAttack } from './algorithms/substitution/SubstitutionAttack';
-import { SubstitutionEcrypt } from './algorithms/substitution/SubstitutionEcrypt'
+import { SubstitutionEncrypt } from './algorithms/substitution/SubstitutionEncrypt'
 import { SubstitutionDecrypt } from './algorithms/substitution/SubstitutionDecrypt';
 
 import { HillInfo } from './algorithms/hill/HillInfo';
@@ -231,7 +231,7 @@ const renderSwitch = (param1, param2, param3) => {
         case (param1 === "Substitution" && param2 === "1"):
             return <SubstitutionInfo />
         case (param1 === "Substitution" && param2 === "2"):
-            return <SubstitutionEcrypt />
+            return <SubstitutionEncrypt />
         case (param1 === "Substitution" && param2 === "3"):
             return <SubstitutionDecrypt />
         case (param1 === "Substitution" && param2 === "4"):

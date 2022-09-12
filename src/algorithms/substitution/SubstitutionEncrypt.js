@@ -9,102 +9,66 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CasinoIcon from '@mui/icons-material/Casino'
+import { Boxes } from './Boxes';
 
-export const AffineEncrypt = (props) => {
+export const SubstitutionEncrypt = (props) => {
 
     const letters = "abcdefghijklmnopqrstuvwxyz"
 
-    const [a, setA] = React.useState("")
-    const [b, setB] = React.useState("")
+    const [alphabet, setAlphabet] = React.useState("")
+
     const [clearText, setClearText] = React.useState("")
-    const [errorA, setErrorA] = React.useState(false)
-    const [errorB, setErrorB] = React.useState(false)
+    const [errorAlphabet, setErrorAlphabet] = React.useState(false)
     const [paramsFixed, setParamsFixed] = React.useState(false)
     const [encryptedText, setEncryptedText] = React.useState("")
 
     const changeEncryptedText = (text) => {
-        let encryptedText = C_Afin(text, a, b)
+        let encryptedText = (text, alphabet)
         setEncryptedText(encryptedText.toUpperCase())
+    }
+
+    const validateAlphabet = (text) => {
+        // validar que solo hayan 26 letras
+        text = text.toLowerCase()
+        let bool1 = (text.length == 26)
+        // validar que estén todas las letras
+        let bool2 = true
+        let letrasEncriptadas = text.split("")
+        for (const letra of letrasEncriptadas) {
+            if (!letters.includes(letra)) {
+                bool2 = false
+            }
+        }
+        //validar que no tenga caracteres repetidos
+        let bool3 = !/(.).*\1/.test(text)
+        let bool = bool1 && bool2 && bool3
+        setErrorAlphabet(bool)
     }
 
     const handleChangeOnA = (x) => {
         x = x.replace(/[^a-zA-Z]/g, '')
-        setA(x)
+
+        let letras = x.split("")
+        let indices = letras.map((letra, i) => {
+            letters.indexOf(letra)
+        })
+        setAlphabet(x)
     }
     //
-    const Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const boxItems = alphabet.split("").map((letraCifrada, i) => {
+        if (i < 26) {
+            return (
 
-    function gcd(m, n) {
-        var gcd;
-        while (true) {
-            gcd = m % n;
-            if (gcd == 0) {
-                return n;
-            }
-            m = n;
-            n = gcd;
-        }
-    }
+                <Boxes
+                    key={i.toString()}
+                    letraClara={letters[i]}
+                    letraCifrada={letraCifrada}
+                />
 
-    const str2num = (str) => {
-        let num = [];
-        for (let i = 0; i < str.length; i++) {
-            num.push(getNumber(str[i]).toString());
-        }
-        return num;
-    }
-
-    const getNumber = (a) => {
-        let i = 0;
-        let a_up = a.toUpperCase();
-        while (a_up != Letters[i]) {
-            i++;
-        }
-        return i;
-    }
-
-    const getLetter = (n) => {
-        return Letters[n % 26];
-    }
-
-    const C_Afin = (text, a, b) => {
-        text = text.replace(/[^a-zA-Z]/g, '')
-        var text_num = str2num(text);
-        var cifrado = '';
-        const size = text.length;
-
-        for (let i = 0; i < size; i++) {
-            var ind = 26 + parseInt(a) * parseInt(text_num[i]) + parseInt(b);
-            cifrado += getLetter(ind);
+            )
         }
 
-        return cifrado;
-    }
-    //
-    const generateRandomA = () => {
-        let isValid = false
-        let randomNumber = 0
-        while (!isValid) {
-            randomNumber = Math.floor(Math.random() * 26)
-            isValid = (gcd(randomNumber, 26) == 1)
-        }
-        return randomNumber
-    }
-
-    const validateA = (x) => {
-
-        let bool1 = /^-?[1-9]+[0-9]*$/.test(x)
-        let bool2 = false
-        if (!isNaN(parseInt(x))) {
-            bool2 = (gcd(x, 26) == 1)
-        }
-        let bool = (bool1 && bool2)
-        setErrorA(bool);
-    }
-    const validateAlphabeticAndSpaceB = (x) => {
-        let bool = /^-?[1-9]+[0-9]*$/.test(x)
-        setErrorB(bool);
-    }
+    })
 
     return (
         <Paper sx={{
@@ -117,7 +81,7 @@ export const AffineEncrypt = (props) => {
             <Typography
                 variant='h5'
                 sx={{ mt: 2 }}
-            >Affine: Encrypt</Typography>
+            >Substitution: Encrypt</Typography>
             <Divider sx={{ mt: 1, mb: 1 }} />
             <Typography variant='h6'>Parameters:</Typography>
             <Box
@@ -131,26 +95,25 @@ export const AffineEncrypt = (props) => {
                 <Grid>
                     <TextField
                         id="param1"
-                        label='Enter "a"'
+                        label='Enter the substitution list'
                         placeholder="1"
-                        helperText="Must be an integer
-                    relatively prime to 26"
+                        helperText="Must be an string of lenght 26 (with chars in range a-z) without repeated chars"
                         sx={{ width: "300px", mb: 2, ml: 5 }}
                         onChange={e => {
-                            validateA(e.target.value);
-                            setA(e.target.value)
+                            validateAlphabet(e.target.value);
+                            setAlphabet(e.target.value)
                             // console.log(a)
                         }}
                         disabled={paramsFixed}
-                        error={!errorA}
-                        value={a}
+                        error={!errorAlphabet}
+                        value={alphabet}
                     />
                     <Tooltip title="Generate random key">
                         <IconButton sx={{ mt: 1 }}
                             disabled={paramsFixed}
                             onClick={() => {
-                                setA(generateRandomA());
-                                setErrorA(true);
+                                // setA(generateRandomA());
+                                // setErrorA(true);
                             }}
                         >
                             <CasinoIcon
@@ -158,20 +121,11 @@ export const AffineEncrypt = (props) => {
                         </IconButton>
                     </Tooltip>
                 </Grid>
-                <TextField
-                    id="param2"
-                    label='Enter "b"'
-                    placeholder="1"
-                    helperText="Must be an integer"
-                    sx={{ width: "300px" }}
-                    onChange={e => {
-                        validateAlphabeticAndSpaceB(e.target.value);
-                        setB(e.target.value)
-                    }}
-                    disabled={paramsFixed}
-                    error={!errorB}
-                    value={b}
-                />
+
+                {/* Renderizar cajas */}
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(26, 1fr)', mb: 2 }}>
+                    {boxItems}
+                </Box>
 
                 <Box sx={{ mb: 0 }}>
                     <Button
@@ -179,7 +133,7 @@ export const AffineEncrypt = (props) => {
                         color="primary"
                         sx={{ mr: 0.5, ml: 0.5 }}
                         onClick={() => {
-                            if (!errorA || !errorB) {
+                            if (!errorAlphabet) {
                                 alert("You can't set the parameters with wrong values")
                             } else {
                                 setParamsFixed(true)
@@ -194,10 +148,10 @@ export const AffineEncrypt = (props) => {
                         color="secondary"
                         onClick={() => {
                             // alert("intentando reiniciar");
-                            setA("");
-                            setB("");
-                            setErrorA(false);
-                            setErrorB(false);
+                            setAlphabet("");
+
+                            setErrorAlphabet(false);
+
                             setParamsFixed(false);
                             setEncryptedText("")
                             setClearText("")

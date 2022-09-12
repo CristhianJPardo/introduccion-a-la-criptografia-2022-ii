@@ -2,6 +2,8 @@ import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { Typography } from '@mui/material';
+import DragDrop from './components/DragDrop';
+import UploadImages from './components/UploadImages';
 
 export const HillEncrypt = () => {
     return (
@@ -12,6 +14,8 @@ export const HillEncrypt = () => {
             >Hill : Encrypt</Typography>
             <Divider sx={{ mt: 1, mb: 1 }} />
             Acá va el Encrypt de Hill
+            <DragDrop />
+            {/* <UploadImages /> */}
 
         </Paper>
     )
