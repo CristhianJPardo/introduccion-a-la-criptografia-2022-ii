@@ -11,10 +11,6 @@ import IconButton from '@mui/material/IconButton';
 
 export const ShiftEncrypt = (props) => {
 
-    // const [width, height] = useWindowSize()
-    // const onlyWidth = useWindowWidth()
-    // const onlyHeight = useWindowHeight()
-
     const letters = "abcdefghijklmnopqrstuvwxyz"
 
     const initialNState = ""
