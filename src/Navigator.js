@@ -41,7 +41,7 @@ export default function Navigator(props) {
         >
             <List disablePadding>
                 <ListItem sx={{ ...item, ...itemCategory, fontSize: 25, color: '#fff', mt: 1.5, pb: 3 }}>
-                    MyApp
+                    MadameX
                 </ListItem>
                 {/* <ListItem sx={{ ...item, ...itemCategory }}>
                     <ListItemIcon>
