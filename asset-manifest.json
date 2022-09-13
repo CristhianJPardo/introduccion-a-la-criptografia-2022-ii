@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/introduccion-a-la-criptografia-2022-ii/static/css/main.f9533726.css",
-    "main.js": "/introduccion-a-la-criptografia-2022-ii/static/js/main.4b3f12f4.js",
+    "main.css": "/introduccion-a-la-criptografia-2022-ii/static/css/main.6d1dc03e.css",
+    "main.js": "/introduccion-a-la-criptografia-2022-ii/static/js/main.0b0c2346.js",
     "static/media/img1.jpg": "/introduccion-a-la-criptografia-2022-ii/static/media/img1.94ba713225276e1c1b68.jpg",
     "static/media/img2.jpg": "/introduccion-a-la-criptografia-2022-ii/static/media/img2.a7a2c045391010bdb472.jpg",
     "static/media/logo.png": "/introduccion-a-la-criptografia-2022-ii/static/media/logo.9d7edee585f73878b7fd.png",
     "index.html": "/introduccion-a-la-criptografia-2022-ii/index.html",
-    "main.f9533726.css.map": "/introduccion-a-la-criptografia-2022-ii/static/css/main.f9533726.css.map",
-    "main.4b3f12f4.js.map": "/introduccion-a-la-criptografia-2022-ii/static/js/main.4b3f12f4.js.map"
+    "main.6d1dc03e.css.map": "/introduccion-a-la-criptografia-2022-ii/static/css/main.6d1dc03e.css.map",
+    "main.0b0c2346.js.map": "/introduccion-a-la-criptografia-2022-ii/static/js/main.0b0c2346.js.map"
   },
   "entrypoints": [
-    "static/css/main.f9533726.css",
-    "static/js/main.4b3f12f4.js"
+    "static/css/main.6d1dc03e.css",
+    "static/js/main.0b0c2346.js"
   ]
 }
