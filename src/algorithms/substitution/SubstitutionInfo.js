@@ -12,7 +12,12 @@ export const SubstitutionInfo = () => {
                 sx={{ mt: 2 }}
             >Substitution : Info</Typography>
             <Divider sx={{ mt: 1, mb: 1 }} />
-            Acá va la info de Substitution
+            <Typography variant='h6'>What is a Substitution cipher?</Typography>
+            <br />
+            <Typography>
+                Substitution of single letters separately—simple substitution—can be demonstrated by writing out the alphabet in some order to represent the substitution. This is termed a substitution alphabet. The cipher alphabet may be shifted or reversed (creating the Caesar and Atbash ciphers, respectively) or scrambled in a more complex fashion, in which case it is called a mixed alphabet or deranged alphabet. Traditionally, mixed alphabets may be created by first writing out a keyword, removing repeated letters in it, then writing all the remaining letters in the alphabet in the usual order.
+                Using this system, the keyword "zebras" gives us the following alphabets:
+            </Typography>
 
         </Paper>
     )

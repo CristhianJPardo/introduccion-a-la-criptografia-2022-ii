@@ -22,7 +22,12 @@ export const SubstitutionEncrypt = (props) => {
     const [paramsFixed, setParamsFixed] = React.useState(false)
     const [encryptedTextInput, setEncryptedTextInput] = React.useState("")
     const [encryptedTextOutput, setEncryptedTextOutput] = React.useState("")
+    const permutations = ['xltuznpofcvyakrwjmidbqghse', 'bcnlfdpvksomhrzwaijuxeytqg', 'pritozegsakufydhqclvnjbmwx', 'fcahxkrpdzmbovlujswtniqegy', 'ysexbtiufawvnzdclphrgkqjmo', 'bjuqnkrygzhmscodeflxwtapiv', 'ejqmlgobcphzwkxytnduivafrs', 'lwodftqbkpnvzcrjaixhmeusgy', 'wiuhvqtakynmdsrlzecogxfjpb', 'wgmvlpnocdtxzsybhaifjreqku', 'bdeorwmycfvtnqhzailpxsjkgu', 'pstbhvmrdyinkjwfxauzocgeql', 'spedqmivnfyjuokzgahxtcwlrb', 'kiomquzhxbyastlwfjcendvgpr', 'gprwtyqxnsvkoehfbdjcmuaizl', 'upjbvxlqywiekdsarztofgmnhc', 'irumtlcjqxgehodypkswfnvbaz', 'cksfrevzjiqmuowypdlghaxtbn', 'vefnrhwpklguxmdsocbjayitqz', 'kpdnqevglratzxuwjmfbcyohis', 'mtdievysgjafcblkwuhorpnzxq', 'zvcqsaeyumlgpwodjbxrhiktfn', 'xqhgplekzsmuoajfyvinrtcwbd', 'xszaypretunfqikbgjcvmoldhw', 'tdfzpacbiyesonwqhrjxlgukvm', 'msxlgcyptqezwdfbrvukijnhoa', 'vdutyqzjfeilknhcpbxoragmsw', 'zfesykqburnmjctpivhwoaxldg', 'qbmywjhxvklzigaconpeftrdsu', 'njqmoahtcplvkrixeuszgdwybf', 'rawgljsdmuyxvpfnetqbokzchi', 'ylkcwfiruqegptzsjbamdxvonh', 'gxsueocjwnvryhpflikbqdaztm', 'yifrveojcpzaulgmxkqsbhntwd', 'razgvwpehyskxtdjqcnlmouibf', 'wriyupntmkhagjlocfzdesxvqb', 'tzdmlrwfvojcguqepxkhbsiany', 'brsgiovcjfpxtwmdlzahunkeqy', 'nxjwvqhrltbkgaiszfpmceudoy', 'xqnilamyforwvdsbhjczgptkeu', 'zqigjenftbouvkrdcsyalxwhmp', 'udxfojlhcnmvraptqgkbeywsiz', 'vwtforxhumeijbydcksqaglnpz', 'ftemkviszhbjwcdynouprqxgal', 'btrnmgxwdluvskqjazehpifcyo', 'igokafxlmyhdtburzwqpvscjne', 'qowzujghdbasrvcmxpkltiyefn', 'asjeiokypntvulmrbdwfgzqcxh', 'nkmesywgfocxvjhildrpatqbuz', 'rbwnicsxdvfklmztgequjpoahy', 'tfszrjlgamhodkyvipebcxuqnw', 'kuzywsjmflqpenvhxaocgdbtir', 'hxslcwnumztpbyqdvigreakfoj', 'djecrgpsxhbfnoaymutqkwzlvi', 'iptsxcqujmnhgerfldzbvwkyao', 'mjipauzywclqkfvgdrtsexnboh', 'mawsifqtphklvyngrbueczxdoj', 'hdikclvxqtpejofgmwrusbyzan', 'ztvkhljqfurasonmbpgedxiywc', 'sptxqvluejghykiwdarcfznmob', 'xeqzimctudkprbafsjgyolvnhw', 'rgzbehljnuyxktvmodqpsfcwai', 'rtckghpfoilbwnvyxazqsedumj', 'ohnklyasucpbvxwqtdrzifmgje', 'prbavtxulsgqwekmjichfdnzyo', 'igzyujmwplfaqvkrcbthsnxode', 'qskiduecwzognhprtfybjxmvla', 'wbvksaufpyzgjrilnohqtmedcx', 'matidyknouzscxlgpfqerbwvhj', 'ehfxwgsubrntoqyizmpavkjcld', 'asgqfeixcjutydprwmvnkbzlho', 'vjfoqurlamwgpnzyishcdbkxet', 'cdopfshyzlxtqvmgujrekbiwan', 'ixjunbyalwqmpgcsrefdktvozh', 'qjnkxpgwveuyfhriltcoadszbm', 'aqcgkmosuwvxefizrpntdjlbyh', 'bmtcfipuexqnsjhkwgoradzvly', 'nykugtsvewafbozpjrqhcmxlid', 'pljaekvgqyrdftzuiwmonhxscb', 'cvihzfpsndtxjykbamlwrogueq', 'scbxpdytwelnziuvghmrajofqk', 'setxranmyhipbkqzogldvufjwc', 'jehctygqdnaxfkspzmiurwlvob', 'nmuqlbdfapvjohgkryzxiecwst', 'efjdghzuywsapmbtcxvqorlikn', 'axpiqjkmvbdhfeutcswlorzgny', 'ifyhuvnbemgltrsajpwkcoqzdx', 'ymocuplxgqfhvrjeaiwskdzbtn', 'wvzupaljkcqbgxnrftimsodyeh', 'rxeogljbnufzaidtkcwpvhyqms', 'vjpoezuadntyqhkwigblrcfmsx', 'duqmgvhibofjerlnsyxwztkpca', 'hklutaegqrcpsvbionfyjmdzwx', 'atuczjqpkvdwfrlxgoshyimebn', 'xrlgshwkypqfuotnjidczbeamv', 'svmgicrltozbpjuydqehxfwkan', 'ezqsmpuwcykhntirjavobxglfd', 'lqwdtarxckunpeivhmjbyzsfog', 'czfxhobgwsqnuemiaydklrjptv', 'kgsnlibpceyrmhzutdowvjxfqa']
 
+    const generateRandomKey = () => {
+        const randomElement = Math.floor(Math.random() * 100)
+        return permutations[randomElement]
+    }
     const changeEncryptedTextOutput = (text) => {
         text = text.replace(/[^a-zA-Z]/g, '')
         text = text.toLowerCase()
@@ -114,8 +119,9 @@ export const SubstitutionEncrypt = (props) => {
                         <IconButton sx={{ mt: 1 }}
                             disabled={paramsFixed}
                             onClick={() => {
-                                // setA(generateRandomA());
-                                // setErrorA(true);
+                                let p = generateRandomKey();
+                                setAlphabet(p);
+                                setErrorAlphabet(true);
                             }}
                         >
                             <CasinoIcon
@@ -125,10 +131,24 @@ export const SubstitutionEncrypt = (props) => {
                 </Grid>
 
                 {/* Renderizar cajas */}
-                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(26, 1fr)', mb: 2 }}>
-                    {boxItems}
-                </Box>
+                <Box sx={{ display: "flex" }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(26, 1fr)', mb: 2 }}>
+                        {boxItems}
+                    </Box>
+                    <Tooltip
+                        title="Copy to Clipboard"
+                        sx={{ m: 0, p: 0 }}
+                    >
 
+                        <IconButton
+                            onClick={() => {
+                                navigator.clipboard.writeText(alphabet)
+                            }}
+                        >
+                            <ContentCopyIcon sx={{ m: 0 }} />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 <Box sx={{ mb: 0 }}>
                     <Button
                         variant="contained"

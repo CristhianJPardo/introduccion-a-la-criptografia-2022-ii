@@ -114,14 +114,14 @@ export default function Navigator(props) {
                     </ListItem> */}
 
                     <ListItem disablePadding key="settings">
-                        <ListItemButton selected={false} sx={item}>
+                        <ListItemButton selected={false} sx={item} disabled>
                             <ListItemIcon><SettingsIcon /> </ListItemIcon>
                             <ListItemText>Settings</ListItemText>
                         </ListItemButton>
                     </ListItem>
 
                     <ListItem disablePadding key="home">
-                        <ListItemButton selected={false} sx={item}>
+                        <ListItemButton selected={false} sx={item} disabled>
                             <ListItemIcon><HomeIcon /></ListItemIcon>
                             <ListItemText>Home</ListItemText>
                         </ListItemButton>

@@ -17,7 +17,6 @@ export const SubstitutionAttack = () => {
     const [trigrams, setTrigrams] = React.useState({})
     const [tetragrams, setTetragrams] = React.useState({})
 
-
     function frequencyTable(text, n) {
         text = text.replace(/[^a-zA-Z]/g, '')
         if (n == 1) {
