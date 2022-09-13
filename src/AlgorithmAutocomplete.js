@@ -38,6 +38,7 @@ const AlgorithmAutocomplete = (props) => {
                 )}
                 getOptionLabel={option => option.name}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
+                // disabled ={option => option.name}
                 style={{ width: 240 }}
                 value={selectedAlgorithm2}
                 onChange={(_event, newAlgo) => {

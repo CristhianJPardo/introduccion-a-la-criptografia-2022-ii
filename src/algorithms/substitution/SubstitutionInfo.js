@@ -13,12 +13,23 @@ export const SubstitutionInfo = () => {
             >Substitution : Info</Typography>
             <Divider sx={{ mt: 1, mb: 1 }} />
             <Typography variant='h6'>What is a Substitution cipher?</Typography>
-            <br />
+            <br></br>
             <Typography>
-                Substitution of single letters separately—simple substitution—can be demonstrated by writing out the alphabet in some order to represent the substitution. This is termed a substitution alphabet. The cipher alphabet may be shifted or reversed (creating the Caesar and Atbash ciphers, respectively) or scrambled in a more complex fashion, in which case it is called a mixed alphabet or deranged alphabet. Traditionally, mixed alphabets may be created by first writing out a keyword, removing repeated letters in it, then writing all the remaining letters in the alphabet in the usual order.
-                Using this system, the keyword "zebras" gives us the following alphabets:
+                Substitution encryption consists, as its name suggests, of substituting (replacing) one element with another. In the case of a text, it is a question of replacing the characters (often letters) of the message by others.
             </Typography>
-
+            <br></br>
+            <Typography variant='h6'>How to encrypt using Subsustitution cipher?</Typography>
+            <br></br>
+            <Typography>
+                For a substitution to be correct, it is necessary for the same element to be substituted by only one other (valid in both cases, for encryption and decryption) so that there is never more than one possibility of encryption or decryption.
+            </Typography>
+            <br></br>
+            <Typography variant='h6'>How to decrypt using the Subsustitution cipher?</Typography>
+            <br></br>
+            <Typography>
+                The condition for a successful substitution decryption is to know the correspondence table used.
+            </Typography>
+            <br></br>
         </Paper>
     )
 }

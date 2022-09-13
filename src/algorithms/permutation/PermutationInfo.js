@@ -34,6 +34,22 @@ export const PermutationInfo = () => {
             </Typography>
 
             <br></br>
+            <Typography variant="h6" gutterBottom>
+                How to encrypt using Permutation cipher?
+            </Typography>
+            <br></br>
+            <Typography>
+                Choose a keyword, and split the plaintext into blocks that are the same length as the keyword. We write this in columns beneath the keyword. We then label each keyword letter in alphabetical order (if there are duplicates we take them in order of appearance). So far this is identical to Columnar Transposition. Now we reorder the columns, so that the numbers are in order (the letters of the keyword are in alphabetical order). We now read across the rows.
+            </Typography>
+            <br></br>
+            <Typography variant="h6" gutterBottom>
+                How to decrypt using Permutation cipher?
+            </Typography>
+            <br></br>
+            <Typography>
+                To decrypt a ciphertext encoded with the Permutation Cipher, we have to write out the ciphertext in columns (the same number as the length of the keyword). We then order the keyword alphabetically, and write the ordered keyword at the top of the columns. We then rearrange the columns to reform the keyword, and read of the plaintext in rows.
+            </Typography>
+            <br></br>
         </Paper>
 
     )

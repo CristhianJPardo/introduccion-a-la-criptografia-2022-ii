@@ -43,7 +43,7 @@ function Header(props) {
                         </Grid>
                         <Grid item>
                             <Tooltip title="Help">
-                                <IconButton color="inherit">
+                                <IconButton href='https://drive.google.com/file/d/1S8fbr62f8OPbftPDI7Tb-fkEc2IkXz1e/view' color="inherit">
                                     <HelpIcon />
                                 </IconButton>
                             </Tooltip>

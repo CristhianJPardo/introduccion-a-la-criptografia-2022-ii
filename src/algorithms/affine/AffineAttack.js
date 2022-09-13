@@ -191,7 +191,7 @@ export const AffineAttack = () => {
             <Typography
                 variant='h5'
                 sx={{ mt: 2 }}
-            >Shift: Attack</Typography>
+            >Affine: Attack</Typography>
             <Divider sx={{ mt: 1, mb: 1 }} />
             <Typography variant='h6'
                 sx={{ mb: 2 }}

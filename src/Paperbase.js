@@ -49,7 +49,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="#">
+            <Link color="inherit" href="https://github.com/CristhianJPardo/introduccion-a-la-criptografia-2022-ii">
                 MadameX
             </Link>{' '}
             {new Date().getFullYear()}.
