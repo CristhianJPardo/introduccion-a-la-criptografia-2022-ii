@@ -26,6 +26,15 @@ code {
   margin-bottom: 10px;
 }
 
+.center-hill {
+  margin-top: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /* width: 50%; */
+  margin-bottom: 10px;
+}
+
 .logo {
 
   animation-name: spin;

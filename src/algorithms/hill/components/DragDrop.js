@@ -16,29 +16,28 @@ function DragDrop(props) {
         setFile(file);
         console.log(file.name);
         setImageData({ data: URL.createObjectURL(file) });
-
         // return img
     };
 
-    const mostrar = true
+    const [mostrar, setMostrar] = useState(false)
 
     const hardCode = () => {
 
         return new Promise((resolve, reject) => {
             console.log("Cargando imagen...")
-            if (file.name == 'test-medium.jpg') {
-                setTimeout(() => {
-                    resolve(mostrar);
-                }, 2000)
-            }
+
+            setTimeout(() => {
+                resolve(mostrar);
+            }, 5000)
+
         })
     }
 
     async function getImg() {
-
         let mostrarImg = await hardCode();
         setImagenparaMostrar(enciphered)
-        console.log(mostrarImg)
+        setMostrar(true)
+        console.log(mostrar)
     }
 
     return (
@@ -50,15 +49,16 @@ function DragDrop(props) {
                     handleChange(file);
                     // console.log(imageData)
                     getImg();
-
                 }
-
                 }
                     name="file" types={fileTypes}
                 />
             </Box>
             <Box>
-                <img key="1" src={imageData.data} />
+                <img key="1" src={imageData.data} className="center-hill" />
+            </Box>
+            <Box>
+                {mostrar ? <img key="2" src={enciphered} className="center-hill" /> : null}
             </Box>
         </Box>
     );
