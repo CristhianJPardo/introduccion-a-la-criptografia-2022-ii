@@ -17,3 +17,24 @@ code {
   width: 250px !important;
 
 } */
+
+.logo {
+
+  animation-name: spin;
+  animation-duration: 30000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+
+  50% {
+    transform: rotate(540deg);
+
+  }
+
+  100% {
+    transform: rotate(0deg);
+
+  }
+}

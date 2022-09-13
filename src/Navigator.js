@@ -10,7 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SimpleAccordion from './SimpleAccordion';
-
+import logo from './logo.png'
+import { ImageList, ImageListItem, Typography } from '@mui/material';
 
 const item = {
     py: '2px',
@@ -41,7 +42,24 @@ export default function Navigator(props) {
         >
             <List disablePadding>
                 <ListItem sx={{ ...item, ...itemCategory, fontSize: 25, color: '#fff', mt: 1.5, pb: 3 }}>
-                    MadameX
+                    <Typography sx={{ fontSize: 31, mr: 2, ml: 0 }}>MadameX</Typography>
+
+
+                    <img
+                        src={logo}
+                        alt="logo"
+                        style={{
+                            width: "60px",
+
+                            // padding: "2px",
+                            // color: "#4fc3f7",
+                            // filter: "brightness(10)",
+                            // filter: "url(#blue-wash)",
+                            filter: "invert(1)"
+                        }}
+                        className="logo"
+                    />
+
                 </ListItem>
                 {/* <ListItem sx={{ ...item, ...itemCategory }}>
                     <ListItemIcon>
