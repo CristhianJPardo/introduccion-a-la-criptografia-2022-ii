@@ -39,6 +39,8 @@ import { VigenereInfo } from './algorithms/vigenere/VigenereInfo';
 import { VigenereAttack } from './algorithms/vigenere/VigenereAttack';
 import { VigenereEncrypt } from './algorithms/vigenere/VigenereEncrypt'
 import { VigenereDecrypt } from './algorithms/vigenere/VigenereDecrypt';
+import { AESInfo } from './algorithms/aes/AESInfo';
+import { AESEncrypt } from './algorithms/aes/AESEncrypt';
 
 
 
@@ -263,6 +265,15 @@ const renderSwitch = (param1, param2, param3) => {
             return <VigenereDecrypt />
         case (param1 === "Vigenere" && param2 === "4"):
             return <VigenereAttack />
+
+        case (param1 === "AES" && param2 === "1"):
+            return <AESInfo />
+        case (param1 === "AES" && param2 === "2"):
+            return <AESEncrypt />
+        // case (param1 === "AES" && param2 === "3"):
+        //     return <VigenereDecrypt />
+        // case (param1 === "AES" && param2 === "4"):
+        //     return <VigenereAttack />
         default:
             return <InitialInfo />
     }

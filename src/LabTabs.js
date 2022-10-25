@@ -28,17 +28,18 @@ export default function LabTabs(props) {
                             sx={{ color: "#ccc" }}
                         />
                         <Tab
-                            label="Encrypt"
+                            label="Encrypt/Decrypt"
                             value="2"
                             sx={{ color: "#ccc" }}
                         />
                         <Tab
-                            label="Decrypt"
+                            label=""
                             value="3"
                             sx={{ color: "#ccc" }}
+                        // disabled={true}
                         />
                         <Tab
-                            label="Attack"
+                            label=""
                             value="4"
                             sx={{ color: "#ccc" }}
                         />

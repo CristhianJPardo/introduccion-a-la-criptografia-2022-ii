@@ -9,9 +9,6 @@ const AlgorithmAutocomplete = (props) => {
     const theme = createTheme({
         palette: {
             mode: "dark",
-            // primary: {
-            //     main: orange[500]
-            // }
         }
     })
 
@@ -21,7 +18,10 @@ const AlgorithmAutocomplete = (props) => {
         { id: 3, name: 'Substitution', group: "Monoalphabetic" },
         { id: 4, name: 'Hill', group: "Polyalphabetic" },
         { id: 5, name: 'Permutation', group: "Polyalphabetic" },
-        { id: 6, name: 'Vigenere', group: "Polyalphabetic" },
+        { id: 6, name: 'AES', group: "Block ciphers" },
+        { id: 7, name: 'S-DES', group: "Block ciphers" },
+        { id: 8, name: 'T-DES', group: "Block ciphers" },
+        { id: 9, name: 'Gamma Pentagonal', group: "Other Systems" },
     ];
 
     console.log(selectedAlgorithm2);

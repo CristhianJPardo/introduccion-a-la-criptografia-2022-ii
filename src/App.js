@@ -5,6 +5,7 @@ function App() {
 
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("none")
   const [selectedTab, setSelectedTab] = useState("1")
+  const [isNew, setIsNew] = useState(false)
 
   return (
 
@@ -13,6 +14,8 @@ function App() {
       prop2={setSelectedAlgorithm}
       prop3={selectedTab}
       prop4={setSelectedTab}
+      prop5={isNew}
+      prop6={setIsNew}
     />
 
   );

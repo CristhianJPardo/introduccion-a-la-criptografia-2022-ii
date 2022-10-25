@@ -8,7 +8,7 @@ import { AttackComponents } from './AttackComponents';
 
 export const SubstitutionAttack = () => {
 
-
+    const hardcore = "qwertyuiopasdfghjklzxcvbnm"
     const keysOfDeciphertexts = [...Array(26).keys()]
     const [clearText, setClearText] = React.useState("")
     const [frequencyTexts, setFrequencyTexts] = React.useState({})
@@ -138,6 +138,10 @@ export const SubstitutionAttack = () => {
                 </Box>
                 <Box sx={{ m: 1 }}>
                     {tetragramsItems}
+                </Box>
+                <Box sx={{ border: "1px solid black" }}>
+                    {/* {(unigramsItems != {}) ? hardcore : null} */}
+
                 </Box>
             </Box>
         </Paper>
