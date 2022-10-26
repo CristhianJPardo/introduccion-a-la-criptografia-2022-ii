@@ -55,3 +55,14 @@ code {
 
   }
 }
+
+#canvas-container {
+  margin-top: 2%;
+  margin-left: 10%;
+  width: 100%;
+  text-align: center;
+}
+
+canvas {
+  width: 30%;
+}

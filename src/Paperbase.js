@@ -41,6 +41,12 @@ import { VigenereEncrypt } from './algorithms/vigenere/VigenereEncrypt'
 import { VigenereDecrypt } from './algorithms/vigenere/VigenereDecrypt';
 import { AESInfo } from './algorithms/aes/AESInfo';
 import { AESEncrypt } from './algorithms/aes/AESEncrypt';
+import { TDESInfo } from './algorithms/tdes/TDESInfo';
+import { TDESEncrypt } from './algorithms/tdes/TDESEncrypt';
+import { SDESInfo } from './algorithms/sdes/SDESInfo';
+import { SDESEncrypt } from './algorithms/sdes/SDESEncrypt';
+import { GammaInfo } from './algorithms/gamma/GammaInfo';
+import { GammaEncrypt } from './algorithms/gamma/GammaEncrypt';
 
 
 
@@ -270,6 +276,20 @@ const renderSwitch = (param1, param2, param3) => {
             return <AESInfo />
         case (param1 === "AES" && param2 === "2"):
             return <AESEncrypt />
+
+        case (param1 === "T-DES" && param2 === "1"):
+            return <TDESInfo />
+        case (param1 === "T-DES" && param2 === "2"):
+            return <TDESEncrypt />
+
+        case (param1 === "S-DES" && param2 === "1"):
+            return <SDESInfo />
+        case (param1 === "S-DES" && param2 === "2"):
+            return <SDESEncrypt />
+        case (param1 === "Gamma Pentagonal" && param2 === "1"):
+            return <GammaInfo />
+        case (param1 === "Gamma Pentagonal" && param2 === "2"):
+            return <GammaEncrypt />
         // case (param1 === "AES" && param2 === "3"):
         //     return <VigenereDecrypt />
         // case (param1 === "AES" && param2 === "4"):

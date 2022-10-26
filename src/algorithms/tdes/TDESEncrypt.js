@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/material'
 import React, { useState } from 'react'
 import axios from 'axios';
 
-export const AESEncrypt = (props) => {
+export const TDESEncrypt = (props) => {
 
     const [selectedFile, setSelectedFile] = useState(null)
     const [imageData, setImageData] = useState({})
@@ -102,9 +102,9 @@ export const AESEncrypt = (props) => {
                         onChange={handleKeyChange}
                     >
                         <option value="default"></option>
-                        <option value="16">16</option>
+                        {/* <option value="16">16</option> */}
                         <option value="24">24</option>
-                        <option value="32">32</option>
+                        {/* <option value="32">32</option> */}
                     </select>
                 </Grid>
 
