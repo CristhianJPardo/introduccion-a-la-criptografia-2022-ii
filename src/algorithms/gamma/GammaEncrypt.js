@@ -15,12 +15,6 @@ import grafo from './grafo.png'
 import permutacion from './permutacion.png'
 import { useState } from 'react';
 
-// const [clearText, setClearText] = React.useState("attackatdawn")
-let globalPermu = 0
-let globalOffsetX = 0
-let globalOffsetY = 0
-let globalPlainText = "attackatdawn"
-let baseCipherText = " "
 // closure of functions for cipher ?
 
     
@@ -402,6 +396,8 @@ var rmAccents = function (inputText) {
   }
   
   function cipher(x0, y0, permutation, clearText, graphType) {
+    console.log("parameteres are",typeof(x0), typeof(y0), typeof(permutation), typeof(clearText), typeof(graphType))
+    console.log("parameteres are",(x0), (y0), (permutation), (clearText), (graphType))
     if (!isAValidPermutation(permutation)) {
       console.log("WHOOPS");
       return;
@@ -464,23 +460,41 @@ var rmAccents = function (inputText) {
   
     return clearText;
   }
-  console.log(cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "the almond", 1));
+  
+  console.log("TEST TEST")
+  console.log(cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "thealmond", 1));
   console.log(
-    decipher(
-      -8,
-      -6,
-      [3, 0, 2, 7, 9, 6, 1, 5, 4, 8],
-      cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "the almond", 1),
-      1
-    )
-  );
-
+      decipher(
+          -8,
+          -6,
+          [3, 0, 2, 7, 9, 6, 1, 5, 4, 8],
+          cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "thealmond", 1),
+          1
+          ))
+          
+          
+          console.log("TEST TEST")
 
 // closure of functions for cipher ?
 
+const validatePermutation = (input) => { //this one assumes 10 length
+    let isNumber = /^-?[1-9]+[0-9]*$/.test(input);
+    let key = Array.from(input.toString()).map(Number);
+    let expectedKey = Array.from({ length: key.length }, (_, i) => i)
+    // console.log(JSON.stringify(key.sort()))
+    // console.log(JSON.stringify(expectedKey))
+    let validKey = JSON.stringify(key.sort()) === JSON.stringify(expectedKey);
+    let validLength = key.length >= 10 && key.length <= 10;
+    console.log("an error?", (isNumber && validKey && validLength) == false)
+    // setError(isNumber && validKey && validLength);
+}
 export const GammaEncrypt = (props) => {
     const [base, setBase] = useState(false)
-    const [x, setX] = useState("")
+    const [x, setX] = useState("0")
+    const [y, setY] = useState("0")
+    const [globalPlainText,setPlain] = useState("attackatdown")
+    const [globalPermu,setPermu] = useState("0123456789")
+    const [baseCipherText,setCipher] = useState("")
 
     return (
         <div>
@@ -512,7 +526,7 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an integer"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-
+                        setY(e.target.value)
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
                         // // console.log(a)
@@ -524,14 +538,17 @@ export const GammaEncrypt = (props) => {
                 <TextField
                     id="param3"
                     label='Enter permutation'
-                    placeholder="0, 1, 2, 3, 4, 5, 6, 7, 8, 9"
-                    helperText="Must be comma separated list of integers"
+                    placeholder="0123456789"
+                    helperText="Must be list of naturals below 10 reordered"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        // globalPermu = e
+                        validatePermutation(e.target.value)
+                        let cache = Array.from(e.target.value.toString()).map(Number);
+                        setPermu(cache)
+
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
-                        // console.log(e)
+                        console.log(e)
                     }}
                     disabled={false}
                     error={false}
@@ -544,8 +561,8 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an string"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        globalPlainText = (e.target.value);
-                        console.log(globalPlainText);
+                        setPlain(e.target.value);
+                        
 
 
                         // validateAlphabet(e.target.value);
@@ -561,14 +578,20 @@ export const GammaEncrypt = (props) => {
                     color="primary"
                     sx={{ mr: 0.5, ml: 5, mt: 1 }}
                     onClick={() => {
-                        baseCipherText = cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], globalPlainText, 1)
+                        // console.log("equal permutations?? ",[3, 0, 2, 7, 9, 6, 1, 5, 4, 8][0]===globalPermu[0])
+                        // console.log(typeof([3, 0, 2, 7, 9, 6, 1, 5, 4, 8]))
+                        // console.log(typeof(globalPermu))
+                        // console.log("parameters are ",x," ", y," ",globalPermu," ",globalPlainText);
+                        setCipher(cipher(parseInt(x), parseInt(y), globalPermu,globalPlainText, 1))
                         setBase(false)
-                       
+                        
+                        
                         setTimeout(
                             () => { setBase(true) },
                             2000
-                        )
-                        
+                            )
+
+                            
                     }}
                     disabled={false}
 
