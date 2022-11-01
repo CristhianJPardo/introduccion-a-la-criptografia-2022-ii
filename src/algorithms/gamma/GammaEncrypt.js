@@ -17,7 +17,198 @@ import { useState } from 'react';
 
 // closure of functions for cipher ?
 
+// function drawGammaGraph(nodes, x0, y0, size) {
+//     drawG(nodes, x0, y0, 0, 0, size);
+//     window.addEventListener("keydown", checkKeyPressed, false);
+//     var i = 0;
+//     var j = 0;
+//     function checkKeyPressed(e) {
+//         if (e.keyCode == "37") {
+//             i -= 10;
+//         }
+//         if (e.keyCode == "38") {
+//             j -= 10;
+//         }
+//         if (e.keyCode == "39") {
+//             i += 10;
+//         }
+//         if (e.keyCode == "40") {
+//             j += 10;
+//         }
+//         context.clearRect(0, 0, canvas.width, canvas.height);
+//         drawG(nodes, x0, y0, i, j, size);
+//     }
+// }
+function setLetras(permutation, div = 12,width,height) {
+    var letras = [];
+    var size = permutation.length;
+    var x0 = width / div;
+    var y0 = ((div - 1) * height) / div;
+    var x = width / div;
+    var y = ((div - 1) * height) / div;
+    var i = 0;
+    var j = 0;
+    var fila = [];
+    while (j < alphSize && i < size) {
+        var arr = [];
+        var arr1 = [];
+        arr1.push(x - x0, y - y0);
+        arr.push(arr1);
+        var letra = dict1[(permutation[i] + j) % alphSize];
+        arr.push(letra);
+        fila.push(arr);
+        ++i;
+        x += width / size + 15;
+        if (i == size) {
+            i = 0;
+            x = width / div;
+            j++;
+            y -= height / (alphSize + 2);
+            letras.push(fila);
+            fila = [];
+        }
+    }
+    return letras;
+}
+
+function drawP(permutation, x0 = 0, y0 = 0,context,width,height) {
+    // console.log("this is the permu",permutation)
+    // permutation = Array.from(permutation.toString()).map(Number)
+    console.log("this is the permu",permutation)
     
+    var size = permutation.length;
+    var div = 12;
+    var letras = setLetras(permutation, div,width,height);
+    //lineas del plano
+    var colorLineas = "e28743";
+    //x
+    context.beginPath();
+    context.moveTo(width / div - x0, 0);
+    context.lineTo(width / div - x0, height);
+    context.lineWidth = 1;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //y
+    context.beginPath();
+    context.moveTo(0, ((div - 1) * height) / div - y0);
+    context.lineTo(width, ((div - 1) * height) / div - y0);
+    context.lineWidth = 1;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //lineas del plano
+    //dibujar coordenadas
+    context.beginPath();
+    //context.font = "[style] [variant] [weight] [size]/[line height] [font family]";
+    var sizeFont = 15; //Tamaño letra
+    context.font = sizeFont + "px " + "Consolas, sans-serif";
+    var i = 0;
+    var j = 0;
+    var x = width / div - x0;
+    var y = ((div - 1) * height) / div - y0;
+    context.moveTo(x, y);
+    console.log(letras);
+
+    for (var i = 0; i < alphSize; ++i) {
+        for (var j = 0; j < size; ++j) {
+            var letra = letras[i][j][1];
+            var text = letra + " " + j + "," + i;
+            context.fillText(
+                text,
+                x + letras[i][j][0][0],
+                y + letras[i][j][0][1]
+            );
+        }
+    }
+    context.stroke();
+}
+function drawG(nodes, x0, y0, movX, movY, size,context,width,height) {
+    var div = 20;
+    //lineas del plano
+    var colorLineas = "e28743";
+    var posx = width / div;
+    var posy = ((div - 1) * height) / div;
+    var movx = width / div;
+    var movy = height / div;
+    context.beginPath();
+    context.moveTo(posx - movx * x0 - movX, 0);
+    context.lineTo(posx - movx * x0 - movX, height);
+    context.lineWidth = 2;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //y
+    context.beginPath();
+    context.moveTo(0, posy + movy * y0 - movY);
+    context.lineTo(width, posy + movy * y0 - movY);
+    context.lineWidth = 2;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //lineas del plano
+    //punto inicial
+    context.beginPath();
+    context.lineWidth = 1;
+    context.strokeStyle = "#ff3232";
+    context.fillStyle = "#ff3232";
+    context.arc(posx - movX, posy - movY, 3, 0, 2 * Math.PI, true);
+    context.fill();
+    context.stroke();
+    //grid con nodos de coordenada
+    for (var i = 0; i < size; ++i) {
+        for (var j = 0; j < alphSize; ++j) {
+            context.beginPath();
+            context.lineWidth = 1;
+            context.strokeStyle = "#000000";
+            context.fillStyle = "#000000";
+            context.arc(
+                posx - movx * (x0 - i) - movX,
+                posy + movy * (y0 - j) - movY,
+                1,
+                0,
+                2 * Math.PI,
+                true
+            );
+            context.fill();
+            context.stroke();
+        }
+    }
+    //dibujo y conexiones de nodos
+    for (var i = 0; i < nodes.length; ++i) {
+        var node = nodes[i];
+        if (i != 0) {
+            context.beginPath();
+            context.lineWidth = 0.3;
+            context.strokeStyle = "#30eaf3";
+            context.fillStyle = "#30eaf3";
+            context.arc(
+                posx - movx * (x0 - node.posX) - movX,
+                posy + movy * (y0 - node.posY) - movY,
+                2,
+                0,
+                2 * Math.PI,
+                true
+            );
+            context.fill();
+            context.stroke();
+        }
+        var colorUnion = "009be5";
+        for (var j = 0; j < node.nodeOut.length; ++j) {
+            var pos2X = nodes[map.get(node.nodeOut[j])].posX;
+            var pos2Y = nodes[map.get(node.nodeOut[j])].posY;
+            context.beginPath();
+            context.moveTo(
+                posx - movx * (x0 - node.posX) - movX,
+                posy + movy * (y0 - node.posY) - movY
+            );
+            context.lineTo(
+                posx - movx * (x0 - pos2X) - movX,
+                posy + movy * (y0 - pos2Y) - movY
+            );
+            context.lineWidth = 2;
+            context.strokeStyle = "#" + colorUnion;
+            context.stroke();
+        }
+    }
+}
+
 var rmAccents = function (inputText) {
     var accents = "ÁÄáäÓÖóöÉËéÇçÍÏíïÚÜúüÑñ";
     var noAccents = "AAaaOOooEEeeCcIIiiUUuuNn";
@@ -141,6 +332,9 @@ var rmAccents = function (inputText) {
   var nodes = [];
   var map = new Map();
   
+
+
+
   function posToId(x0, y0, x, y, length) {
     var len = length;
     if (x0 < 0) {
@@ -486,15 +680,17 @@ const validatePermutation = (input) => { //this one assumes 10 length
     let validKey = JSON.stringify(key.sort()) === JSON.stringify(expectedKey);
     let validLength = key.length >= 10 && key.length <= 10;
     console.log("an error?", (isNumber && validKey && validLength) == false)
-    // setError(isNumber && validKey && validLength);
+    return (isNumber && validKey && validLength);
 }
 export const GammaEncrypt = (props) => {
     const [base, setBase] = useState(false)
     const [x, setX] = useState("0")
     const [y, setY] = useState("0")
-    const [globalPlainText,setPlain] = useState("attackatdown")
+    const [globalPlainText,setPlain] = useState("attackatdawn")
     const [globalPermu,setPermu] = useState("0123456789")
     const [baseCipherText,setCipher] = useState("")
+
+     
 
     return (
         <div>
@@ -512,7 +708,9 @@ export const GammaEncrypt = (props) => {
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
                         // validateAlphabet(e.target.value);
-                        setX(e.target.value)
+                        if(e.target.value != ""){
+                            setX((e.target.value))}
+                        else setX(0)
                         // // console.log(a)
                     }}
                     disabled={false}
@@ -526,7 +724,9 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an integer"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        setY(e.target.value)
+                        if(e.target.value != ""){
+                        setY((e.target.value))}
+                        else setY(0)
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
                         // // console.log(a)
@@ -542,9 +742,13 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be list of naturals below 10 reordered"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        validatePermutation(e.target.value)
-                        let cache = Array.from(e.target.value.toString()).map(Number);
-                        setPermu(cache)
+                        if(e.target.value != "" && validatePermutation(e.target.value)){
+                            validatePermutation(e.target.value)
+                            let cache = Array.from(e.target.value.toString()).map(Number);
+                            setPermu(cache)}
+                            else { let cache = Array.from(e.target.value.toString()).map(Number);
+                                setPermu(cache)
+                        }
 
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
@@ -557,11 +761,15 @@ export const GammaEncrypt = (props) => {
                 <TextField
                     id="param4"
                     label='Clear text'
-                    placeholder="attackatdown"
+                    placeholder="attackatdawn"
                     helperText="Must be an string"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        setPlain(e.target.value);
+                        if(e.target.value != ""){
+                            setPlain(e.target.value);}
+                            else setPlain("attackatdawn");
+                        
+                        
                         
 
 
@@ -584,11 +792,40 @@ export const GammaEncrypt = (props) => {
                         // console.log("parameters are ",x," ", y," ",globalPermu," ",globalPlainText);
                         setCipher(cipher(parseInt(x), parseInt(y), globalPermu,globalPlainText, 1))
                         setBase(false)
+
+
+                        //seccion grafo
+
+                        var canvas = document.querySelector("#myCanvas");
+                        var context = canvas.getContext("2d");
+                        var width = canvas.width;
+                        var height = canvas.height;
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+
+                        var nodes = gammaGraph(parseInt(x),parseInt(y), globalPermu.length, 1);
+                        console.log(nodes);
+                        drawG(nodes, x, y,0,0, globalPermu.length,context,width,height);
                         
-                        
+                        // fin seccion grafo
+                        // seccion permu
+
+                        setTimeout(
+                            () => { 
+                                var canvas = document.querySelector("#myCanvas2");
+                            var context = canvas.getContext("2d");
+                        var width = canvas.width;
+                        var height = canvas.height;
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        drawP(globalPermu,  0,  0,context,width,height)
+
+                            },
+                            100
+                            )
+
+                                               
                         setTimeout(
                             () => { setBase(true) },
-                            2000
+                            100
                             )
 
                             
@@ -598,23 +835,11 @@ export const GammaEncrypt = (props) => {
                 >Generate!</Button>
 
             </Grid>
-            {base ? <img
-                className='center'
-                src={grafo}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {base ? <img
-                className='center'
-                src={permutacion}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {
+            {<canvas className='center canvas' id="myCanvas" width="640vw" height="700vh" ></canvas>}
+            {<br></br>}
+            {<canvas className='center canvas' id="myCanvas2" width="640vw" height="700vh" ></canvas>}
+            {<br></br>}
+                       {
                 base ? baseCipherText : ""
             }
         </div>
