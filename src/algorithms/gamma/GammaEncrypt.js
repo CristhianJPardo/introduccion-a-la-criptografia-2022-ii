@@ -689,6 +689,8 @@ export const GammaEncrypt = (props) => {
     const [globalPlainText,setPlain] = useState("attackatdawn")
     const [globalPermu,setPermu] = useState("0123456789")
     const [baseCipherText,setCipher] = useState("")
+    const [toUncipher,setToUncipher] = useState("")
+    const [graphType,setGraph] = useState(1)
 
      
 
@@ -715,7 +717,7 @@ export const GammaEncrypt = (props) => {
                     }}
                     disabled={false}
                     error={false}
-                    value={x}
+                    // value={x}
                 />
                 <TextField
                     id="param2"
@@ -781,6 +783,19 @@ export const GammaEncrypt = (props) => {
                     error={false}
                 // value={"alphabet"}
                 />
+                 <TextField
+                    id="param6"
+                    label='Enter graph type'
+                    placeholder="1"
+                    helperText="Must be 1 or 0"
+                    sx={{ width: "300px", mb: 2, ml: 5 }}
+                    onChange={e => {
+                        // validateAlphabet(e.target.value);
+                            setGraph(e.target.value)
+                    }}
+                    disabled={false}
+                    error={false}
+                />
                 <Button
                     variant="contained"
                     color="primary"
@@ -802,7 +817,10 @@ export const GammaEncrypt = (props) => {
                         var height = canvas.height;
                         context.clearRect(0, 0, canvas.width, canvas.height);
 
-                        var nodes = gammaGraph(parseInt(x),parseInt(y), globalPermu.length, 1);
+
+                        if(graphType != "0" || graphType != "1"){
+                            setGraph(parseInt(graphType)%2)}    
+                        var nodes = gammaGraph(parseInt(x),parseInt(y), globalPermu.length, parseInt(graphType));
                         console.log(nodes);
                         drawG(nodes, x, y,0,0, globalPermu.length,context,width,height);
                         
@@ -842,6 +860,7 @@ export const GammaEncrypt = (props) => {
                        {
                 base ? baseCipherText : ""
             }
+            
         </div>
 
     )
