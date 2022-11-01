@@ -3,6 +3,7 @@ import Paper from '@mui/material/Paper';
 // import { MathComponent } from "mathjax-react";
 import Divider from '@mui/material/Divider';
 import { Typography } from '@mui/material';
+import carga from './carga.png'
 
 export const GammaInfo = () => {
     return (
@@ -14,7 +15,14 @@ export const GammaInfo = () => {
             <Divider sx={{ mt: 1, mb: 1 }} />
             <Typography variant='h6'>Gamma Pentagonal cipher</Typography>
             <br></br>
-
+            <img
+                className='center'
+                src={carga}
+                alt='imagen 1'
+                style={{
+                    width: "500px",
+                }}
+            />
         </Paper>
     )
 }
