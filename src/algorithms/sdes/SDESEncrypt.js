@@ -43,6 +43,16 @@ export const SDESEncrypt = (props) => {
         setKey("")
     }
 
+    const isNumeric = (str) => {
+        return !isNaN(str) && !isNaN(parseFloat(str))
+    }
+
+    const toBinary = (str) => {
+        if (isNumeric(str)) {
+            return parseFloat(str).toString(2).padStart(64)
+        }
+    }
+
     return (
         <Box>
             <Grid
@@ -62,6 +72,8 @@ export const SDESEncrypt = (props) => {
                         console.log(e.target.value)
                     }}
                     value={key}
+                    error={!isNumeric(key)}
+                    helperText={toBinary(key)}
                 />
             </Grid>
             <Grid
@@ -72,7 +84,7 @@ export const SDESEncrypt = (props) => {
                         mt: 2,
                         mb: 2,
                     }}
-                    id="1"
+                    id="2"
                     label="Clear Text"
                     variant='outlined'
                     onChange={(e) => {
@@ -80,13 +92,15 @@ export const SDESEncrypt = (props) => {
                         console.log(e.target.value)
                     }}
                     value={textoEntrada}
+                    error={!isNumeric(textoEntrada)}
+                    helperText={toBinary(textoEntrada)}
                 />
                 <TextField
                     sx={{
                         mt: 2,
                         mb: 2,
                     }}
-                    id="2"
+                    id="3"
                     label="Cyphertext"
                     variant='outlined'
                     onChange={(e) => {
@@ -95,13 +109,14 @@ export const SDESEncrypt = (props) => {
                     }}
                     value={textRecibido}
                     disabled={true}
+                    helperText={toBinary(textRecibido)}
                 />
                 <TextField
                     sx={{
                         mt: 2,
                         mb: 2,
                     }}
-                    id="2"
+                    id="4"
                     label="Decypheredtext"
                     variant='outlined'
                     onChange={(e) => {

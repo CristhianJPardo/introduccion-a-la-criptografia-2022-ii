@@ -52,7 +52,7 @@ export const AESEncrypt = (props) => {
     const handleSubmit2 = (e) => {
         setTimeout(
             () => { setImageData2(imageData) },
-            1000
+            2500
         );
         // e.preventDefault(); //Prevenir que se refresque la página cuando se haga submit
     }

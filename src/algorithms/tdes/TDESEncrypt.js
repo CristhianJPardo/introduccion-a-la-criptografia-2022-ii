@@ -24,7 +24,7 @@ export const TDESEncrypt = (props) => {
     const enviarImagenAEncriptar = async (data) => {
         try {
             const resp = await axios.post(
-                "http://localhost:8000/upload_aes_encrypt/"
+                "http://localhost:8000/upload_tdes_encrypt/"
                 + "?" + (new URLSearchParams({ key: key })).toString()
                 + "&" + (new URLSearchParams({ mode: mode })).toString()
                 , data
@@ -52,7 +52,7 @@ export const TDESEncrypt = (props) => {
     const handleSubmit2 = (e) => {
         setTimeout(
             () => { setImageData2(imageData) },
-            1000
+            2500
         );
         // e.preventDefault(); //Prevenir que se refresque la página cuando se haga submit
     }
@@ -102,7 +102,7 @@ export const TDESEncrypt = (props) => {
                         onChange={handleKeyChange}
                     >
                         <option value="default"></option>
-                        {/* <option value="16">16</option> */}
+                        <option value="16">16</option>
                         <option value="24">24</option>
                         {/* <option value="32">32</option> */}
                     </select>
