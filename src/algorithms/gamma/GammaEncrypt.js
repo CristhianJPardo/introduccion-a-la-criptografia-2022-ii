@@ -20,7 +20,7 @@ let globalPermu = 0
 let globalOffsetX = 0
 let globalOffsetY = 0
 let globalPlainText = "attackatdawn"
-
+let baseCipherText = " "
 // closure of functions for cipher ?
 
     
@@ -545,7 +545,7 @@ export const GammaEncrypt = (props) => {
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
                         globalPlainText = (e.target.value);
-                        console.log(e.target.value);
+                        console.log(globalPlainText);
 
 
                         // validateAlphabet(e.target.value);
@@ -561,10 +561,14 @@ export const GammaEncrypt = (props) => {
                     color="primary"
                     sx={{ mr: 0.5, ml: 5, mt: 1 }}
                     onClick={() => {
+                        baseCipherText = cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], globalPlainText, 1)
+                        setBase(false)
+                       
                         setTimeout(
                             () => { setBase(true) },
                             2000
                         )
+                        
                     }}
                     disabled={false}
 
@@ -588,7 +592,7 @@ export const GammaEncrypt = (props) => {
                 }}
             /> : ""}
             {
-                base ? cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], globalPlainText, 1) : ""
+                base ? baseCipherText : ""
             }
         </div>
 
