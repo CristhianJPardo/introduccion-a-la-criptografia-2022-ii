@@ -15,6 +15,469 @@ import grafo from './grafo.png'
 import permutacion from './permutacion.png'
 import { useState } from 'react';
 
+// const [clearText, setClearText] = React.useState("attackatdawn")
+let globalPermu = 0
+let globalOffsetX = 0
+let globalOffsetY = 0
+let globalPlainText = "attackatdawn"
+
+// closure of functions for cipher ?
+
+    
+var rmAccents = function (inputText) {
+    var accents = "ÁÄáäÓÖóöÉËéÇçÍÏíïÚÜúüÑñ";
+    var noAccents = "AAaaOOooEEeeCcIIiiUUuuNn";
+    return inputText
+      .split("")
+      .map(function (chr) {
+        const accentIndex = accents.indexOf(chr);
+        return accentIndex !== -1 ? noAccents[accentIndex] : chr;
+      })
+      .join("");
+  };
+  
+  var normalizeInput = function (inputText) {
+    return rmAccents(inputText)
+      .replaceAll(/[^a-zA-Z]/g, "")
+      .replaceAll(" ", "")
+      .toLowerCase();
+  };
+  
+  function ranPermutation() {
+    var size = Math.floor(Math.random() * 26);
+    while (size == 0) {
+      size = Math.floor(Math.random() * 26);
+    }
+    var arr = new Array(size);
+    for (var i = 0; i < arr.length; i++) arr[i] = i;
+    var j;
+    var temp;
+    for (var i = arr.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+    return arr;
+  }
+  
+  function isAValidPermutation(permutation) {
+    var dupMap = {};
+    for (var i = 0; i < permutation.length; i++) {
+      if (
+        permutation.length == 0 ||
+        permutation[i] < 0 ||
+        permutation[i] > permutation.length - 1
+      )
+        return false;
+      // Verificar duplicados.
+      if (dupMap[permutation[i]]) return false;
+      dupMap[permutation[i]] = true;
+    }
+    return true;
+  }
+  const dict1 = {
+    0: "a",
+    1: "b",
+    2: "c",
+    3: "d",
+    4: "e",
+    5: "f",
+    6: "g",
+    7: "h",
+    8: "i",
+    9: "j",
+    10: "k",
+    11: "l",
+    12: "m",
+    13: "n",
+    14: "o",
+    15: "p",
+    16: "q",
+    17: "r",
+    18: "s",
+    19: "t",
+    20: "u",
+    21: "v",
+    22: "w",
+    23: "x",
+    24: "y",
+    25: "z",
+  };
+  const dict = {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+    f: 5,
+    g: 6,
+    h: 7,
+    i: 8,
+    j: 9,
+    k: 10,
+    l: 11,
+    m: 12,
+    n: 13,
+    o: 14,
+    p: 15,
+    q: 16,
+    r: 17,
+    s: 18,
+    t: 19,
+    u: 20,
+    v: 21,
+    w: 22,
+    x: 23,
+    y: 24,
+    z: 25,
+  };
+  class Node {
+    constructor(posX, posY, generation) {
+      this.posX = posX;
+      this.posY = posY;
+      this.numIn = 0;
+      this.maxSlope = 0;
+      this.nodeOut = [];
+      this.generation = generation;
+    }
+  }
+  
+  const alphSize = 26;
+  var nodes = [];
+  var map = new Map();
+  
+  function posToId(x0, y0, x, y, length) {
+    var len = length;
+    if (x0 < 0) {
+      len += Math.abs(x0);
+    }
+    return (y - y0) * len + (x - x0);
+  }
+  
+  function gammaGraph(x0, y0, length, graphType) {
+    let pos = 0
+    nodes = [];
+    map = new Map();
+    var slopes = [];
+    var maxY = 25;
+    if (y0 <= 0) maxY += Math.abs(y0);
+    if (graphType == 1) {
+      //natural numbers
+      for (var i = 0; i <= maxY; ++i) {
+        slopes.push(i);
+      }
+      nodes.push(new Node(x0, y0, 1));
+      map.set(posToId(x0, y0, x0, y0, length), nodes.length - 1);
+      //console.log(map.get(0));
+      var i = 0;
+      var generation = 1;
+      while (true) {
+        var x = nodes[i].posX + 1;
+        var y = nodes[i].posY + slopes[i];
+        if (x < length && y < alphSize) {
+          nodes.push(new Node(x, y, generation));
+          nodes[i + 1].numIn++;
+          nodes[i + 1].maxSlope = slopes[i];
+          nodes[i].nodeOut.push(posToId(x0, y0, x, y, length));
+          map.set(posToId(x0, y0, x, y, length), nodes.length - 1);
+          ++i;
+        } else {
+          break;
+        }
+      }
+      //                    Generacion 2
+      var size = nodes.length;
+      //console.log(size);
+      generation = 2;
+      for (var i = 1; i < size; ++i) {
+        var j = 0;
+        var index = i;
+        while (true) {
+          var x = nodes[index].posX + 1;
+          var y = nodes[index].posY + slopes[j];
+          var id = posToId(x0, y0, x, y, length);
+          if (map.get(id) >= 0) {
+         pos = map.get(id);
+          } else {
+            pos = -1;
+          }
+          if (x < length && y < alphSize) {
+            if (pos == -1) {
+              nodes.push(new Node(x, y, generation));
+              pos = nodes.length - 1;
+              map.set(posToId(x0, y0, x, y, length), pos);
+            }
+            var exists = false;
+            for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+              if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                exists = true;
+                break;
+              }
+            }
+            if (!exists) {
+              nodes[pos].numIn++;
+              nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+              nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+            }
+            ++j;
+            index = pos;
+          } else {
+            break;
+          }
+        }
+      }
+      //                    Generacion 3
+      generation = 3;
+      var maxId =
+        (length + Math.abs(Math.min(x0, 0))) *
+        (alphSize + Math.abs(Math.min(y0, 0)));
+      for (var i = 0; i <= maxId; ++i) {
+        if (map.get(i) >= 0) {
+          var node = nodes[map.get(i)];
+          if (node.generation == 2) {
+            var j = 0;
+            var index = map.get(i);
+            var maxSlope = node.maxSlope;
+            while (slopes[j] <= maxSlope) {
+              var x = nodes[index].posX + 1;
+              var y = nodes[index].posY + slopes[j];
+              var id = posToId(x0, y0, x, y, length);
+              if (map.get(id) >= 0) {
+                pos = map.get(id);
+              } else {
+                pos = -1;
+              }
+              if (x < length && y < alphSize) {
+                if (pos == -1) {
+                  nodes.push(new Node(x, y, generation));
+                  pos = nodes.length - 1;
+                  map.set(posToId(x0, y0, x, y, length), pos);
+                  nodes[pos].numIn++;
+                }
+                var exists = false;
+                for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+                  if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                    exists = true;
+                    break;
+                  }
+                }
+                if (!exists) {
+                  nodes[pos].numIn++;
+                  nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+                  nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+                }
+                ++j;
+                index = pos;
+              } else {
+                break;
+              }
+            }
+          }
+        }
+      }
+    } else {
+      //triangular numbers
+      for (var i = 0; (i * (i + 1)) / 2 <= maxY; ++i) {
+        slopes.push((i * (i + 1)) / 2);
+      }
+      nodes.push(new Node(x0, y0, 1));
+      map.set(posToId(x0, y0, x0, y0, length), nodes.length - 1);
+      //console.log(map.get(0));
+      var i = 0;
+      //                    Generacion 1
+      var generation = 1;
+      while (true) {
+        var x = nodes[i].posX + 1;
+        var y = nodes[i].posY + slopes[i];
+        if (x < length && y < alphSize) {
+          nodes.push(new Node(x, y, generation));
+          nodes[i + 1].numIn++;
+          nodes[i + 1].maxSlope = slopes[i];
+          nodes[i].nodeOut.push(posToId(x0, y0, x, y, length));
+          map.set(posToId(x0, y0, x, y, length), nodes.length - 1);
+          ++i;
+        } else {
+          break;
+        }
+      }
+      //                    Generacion 2
+      var size = nodes.length;
+      //console.log(size);
+      generation = 2;
+      for (var i = 1; i < size; ++i) {
+        var j = 0;
+        var index = i;
+        while (true) {
+          var x = nodes[index].posX + 1;
+          var y = nodes[index].posY + slopes[j];
+          var id = posToId(x0, y0, x, y, length);
+          if (map.get(id) >= 0) {
+            pos = map.get(id);
+          } else {
+            pos = -1;
+          }
+          if (x < length && y < alphSize) {
+            if (pos == -1) {
+              nodes.push(new Node(x, y, generation));
+              pos = nodes.length - 1;
+              map.set(posToId(x0, y0, x, y, length), pos);
+            }
+            var exists = false;
+            for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+              if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                exists = true;
+                break;
+              }
+            }
+            if (!exists) {
+              nodes[pos].numIn++;
+              nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+              nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+            }
+            ++j;
+            index = pos;
+          } else {
+            break;
+          }
+        }
+      }
+      //                    Generacion 3
+      generation = 3;
+      var maxId =
+        (length + Math.abs(Math.min(x0, 0))) *
+        (alphSize + Math.abs(Math.min(y0, 0)));
+      for (var i = 0; i <= maxId; ++i) {
+        if (map.get(i) >= 0) {
+          var node = nodes[map.get(i)];
+          if (node.generation == 2) {
+            var j = 1;
+            var index = map.get(i);
+            var maxSlope = node.maxSlope;
+            while (slopes[j] <= maxSlope) {
+              var x = nodes[index].posX + 1;
+              var y = nodes[index].posY + slopes[j];
+              var id = posToId(x0, y0, x, y, length);
+              if (map.get(id) >= 0) {
+                pos = map.get(id);
+              } else {
+                pos = -1;
+              }
+              if (x < length && y < alphSize) {
+                if (pos == -1) {
+                  nodes.push(new Node(x, y, generation));
+                  pos = nodes.length - 1;
+                  map.set(posToId(x0, y0, x, y, length), pos);
+                  nodes[pos].numIn++;
+                }
+                var exists = false;
+                for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+                  if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                    exists = true;
+                    break;
+                  }
+                }
+                if (!exists) {
+                  nodes[pos].numIn++;
+                  nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+                  nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+                }
+                ++j;
+                index = pos;
+              } else {
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    return nodes;
+  }
+  
+  function calculatePosition(shiftNumber, letter) {
+    var res = dict[letter] - shiftNumber;
+    res = (res + alphSize) % alphSize;
+    return res;
+  }
+  
+  function cipher(x0, y0, permutation, clearText, graphType) {
+    if (!isAValidPermutation(permutation)) {
+      console.log("WHOOPS");
+      return;
+    }
+    var text = normalizeInput(clearText);
+    let size = permutation.length;
+    nodes = gammaGraph(x0, y0, size, graphType);
+    //console.log(nodes);
+    var cipheredText = "";
+    var position = 0;
+    for (var i = 0; i < text.length; ++i) {
+      var y = calculatePosition(permutation[position], text[i]);
+      var shift = 0;
+      if (map.get(posToId(x0, y0, position, y, size)) >= 0) {
+        shift = nodes[map.get(posToId(x0, y0, position, y, size))].numIn;
+      }
+      cipheredText += "(";
+      cipheredText += ((shift + dict[text[i]]) % alphSize) + "," + y;
+      cipheredText += ")";
+      if (i < text.length - 1) cipheredText += ",";
+      ++position;
+      position %= size;
+    }
+    return cipheredText;
+  }
+  function decipher(x0, y0, permutation, cipherText, graphType) {
+    if (!isAValidPermutation(permutation)) {
+      console.log("WHOOPS");
+      return;
+    }
+    let size = permutation.length;
+    var clearText = "";
+    var position = 0;
+    for (var i = 0; i < cipherText.length; ++i) {
+      if (cipherText[i] == "(") {
+        ++i;
+        var a = "";
+        while (cipherText[i] != ",") {
+          a += cipherText[i];
+          ++i;
+        }
+        ++i;
+        var b = "";
+        while (cipherText[i] != ")") {
+          b += cipherText[i];
+          ++i;
+        }
+        console.log(a, b);
+      } else continue;
+      var c = parseInt(b);
+      nodes = gammaGraph(x0, y0, size, graphType);
+      var shift = 0;
+      if (map.get(posToId(x0, y0, a, b, size)) >= 0) {
+        shift = nodes[map.get(posToId(x0, y0, a, b, size))].numIn;
+      }
+      clearText += dict1[(c + permutation[position]) % alphSize];
+      ++position;
+      position %= size;
+    }
+  
+    return clearText;
+  }
+  console.log(cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "the almond", 1));
+  console.log(
+    decipher(
+      -8,
+      -6,
+      [3, 0, 2, 7, 9, 6, 1, 5, 4, 8],
+      cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "the almond", 1),
+      1
+    )
+  );
+
+
+// closure of functions for cipher ?
+
 export const GammaEncrypt = (props) => {
     const [base, setBase] = useState(false)
     const [x, setX] = useState("")
@@ -49,6 +512,7 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an integer"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
+
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
                         // // console.log(a)
@@ -64,9 +528,10 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be comma separated list of integers"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
+                        // globalPermu = e
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
-                        // // console.log(a)
+                        // console.log(e)
                     }}
                     disabled={false}
                     error={false}
@@ -79,6 +544,10 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an string"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
+                        globalPlainText = (e.target.value);
+                        console.log(e.target.value);
+
+
                         // validateAlphabet(e.target.value);
                         // setAlphabet(e.target.value)
                         // // console.log(a)
@@ -119,7 +588,7 @@ export const GammaEncrypt = (props) => {
                 }}
             /> : ""}
             {
-                base ? "(22,19),(4,21),(0,21),(23,11),(5,25),(4,23),(16,9),(12,22),(23,18),(7,0),(0,23),(23,12),(4,25),(4,24),(25,22),(8,4),(25,16),(23,11),(4,4),(7,22),(7,2),(18,5),(20,12),(9,1),(0,19),(17,9),(3,1),(19,9),(4,4),(7,22),(20,15),(18,5),(8,0),(1,18),(7,3),(3,22),(22,15),(21,10),(20,15),(14,7),(2,25),(14,1),(4,25),(22,13),(25,21),(3,22),(0,17),(8,20),(7,7),(9,23),(20,15),(22,13),(10,2),(12,2),(2,1),(7,3),(16,9),(6,18),(24,19),(9,23),(17,14),(1,18),(4,25),(5,22),(5,25),(16,8),(4,2),(1,14),(23,17),(8,1),(20,15),(24,10),(22,17),(0,20),(23,18),(6,24),(7,5),(12,22),(23,18),(14,7),(17,14),(6,23),(17,6),(0,20),(22,17),(23,14),(4,2),(21,10),(2,22),(9,23),(17,14),(4,21),(18,13),(19,8),(17,11),(4,0),(18,12),(8,23),(24,19),(7,0),(9,1),(7,22),(13,3),(23,11),(22,17),(0,15),(4,2),(0,15),(0,0),(12,5),(15,12),(15,2),(4,25),(22,12),(12,7),(17,9),(0,17),(13,25),(4,4),(7,0),(11,5),(21,9),(20,14),(19,8),(21,16),(1,20),(18,12),(8,23),(2,22),(9,23),(0,23),(17,8),(0,21),(3,21),(16,10),(4,0),(0,17),(12,22),(2,2),(7,0),(15,10),(18,5),(17,6),(19,8),(10,5),(1,20),(20,13),(12,22),(18,14),(15,8),(11,8),(4,21),(22,17),(19,8),(21,16),(4,0),(0,17),(13,25),(4,4),(12,5),(19,16),(18,5),(10,2),(0,20),(21,20),(4,0),(7,24),(12,4),(18,14),(17,10),(9,1),(2,19),(16,9),(17,6),(9,4),(18,10),(22,15),(23,11),(0,0),(7,20),(11,8),(4,21),(17,6),(12,2),(9,4),(4,0),(7,24),(13,5),(3,3),(25,15),(9,1),(21,9),(20,14),(12,2),(16,10),(15,7),(3,1),(14,6),(6,6),(11,4),(0,23),(21,9),(18,13),(4,24),(22,17),(7,3),(4,2),(11,3),(20,15),(2,17),(14,11),(20,11),(18,13),(4,24),(7,3),(3,22),(17,11),(10,21),(2,22),(6,19),(19,16),(2,19),(10,2),(4,24),(22,17),(6,2),(8,6),(0,13),(4,4),(2,17),(14,11),(20,11),(10,2),(4,24),(16,10),(20,11),(5,3),(25,12),(11,11),(8,1),(15,10),(7,22),(16,9),(23,11),(17,11),(3,22),(0,17),(8,0),(18,14),(13,6),(1,24),(20,11),(20,14),(17,6),(21,13),(8,25),(4,2),(19,9),(17,13),(25,15),(9,1),(0,17),(20,12),(0,20),(1,0),(15,7),(4,2),(10,21),(4,4),(21,14),(11,5),(2,19),(4,25),(22,12),(5,25),(23,13),(4,2),(12,4),(18,14),(17,10),(9,1),(2,19),(16,9),(17,6),(18,14),(15,7),(8,6),(8,20),(0,0),(19,12),(9,1),(3,20),(20,14),(9,1),(7,3),(1,20),(7,24),(19,9),(4,4),(9,23),(11,8),(4,21),(4,23),(22,13),(21,16),(18,10),(17,11),(8,0),(2,2),(6,19),(15,10),(3,20),(20,14),(9,1),(7,3),(1,20),(0,18),(21,10),(4,4),(19,12),(10,4),(4,21),(13,3),(19,7),(23,18),(4,0),(22,15),(13,5),(4,4),(19,12),(19,16),(18,5),(4,23),(19,8),(16,10),(15,7),(4,2),(8,20),(24,19),(18,11),(19,16),(18,5),(20,12),(4,24),(5,25),(17,9),(3,1),(21,10),(4,4),(13,6),(6,0),(3,20),(13,3),(7,25),(9,4),(4,0),(22,15),(12,22),(17,13),(19,12),(12,7),(8,25),(16,8),(6,23),(22,17),(18,10),(5,3),(8,0),(17,13),(11,24),(14,11),(17,8),(18,7),(0,20),(23,18),(8,4),(18,12),(13,5)" : ""
+                base ? cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], globalPlainText, 1) : ""
             }
         </div>
 
