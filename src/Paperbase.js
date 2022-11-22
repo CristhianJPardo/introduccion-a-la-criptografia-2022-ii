@@ -48,6 +48,18 @@ import { SDESEncrypt } from './algorithms/sdes/SDESEncrypt';
 import { GammaInfo } from './algorithms/gamma/GammaInfo';
 import { GammaEncrypt } from './algorithms/gamma/GammaEncrypt';
 
+import { RSAEncrypt } from './algorithms/rsa/RSAEncrypt';
+import { RSAInfo } from './algorithms/rsa/RSAInfo';
+
+import { RabinInfo } from './algorithms/rabin/RabinInfo';
+import { RabinEncrypt } from './algorithms/rabin/RabinEncrypt';
+
+import { ElGamalInfo } from './algorithms/elgamalzp/ElGamalZpInfo';
+import { ElGamalZpEncrypt } from './algorithms/elgamalzp/ElGamalZpEncrypt';
+
+import { ElGamalEccInfo } from './algorithms/elgamalecc/ElGamalEccInfo';
+import { ElGamalEccEncrypt } from './algorithms/elgamalecc/ElGamalEccEncrypt';
+
 
 
 
@@ -286,14 +298,32 @@ const renderSwitch = (param1, param2, param3) => {
             return <SDESInfo />
         case (param1 === "S-DES" && param2 === "2"):
             return <SDESEncrypt />
+
         case (param1 === "Gamma Pentagonal" && param2 === "1"):
             return <GammaInfo />
         case (param1 === "Gamma Pentagonal" && param2 === "2"):
             return <GammaEncrypt />
-        // case (param1 === "AES" && param2 === "3"):
-        //     return <VigenereDecrypt />
-        // case (param1 === "AES" && param2 === "4"):
-        //     return <VigenereAttack />
+
+        case (param1 === "RSA" && param2 === "1"):
+            return <RSAInfo />
+        case (param1 === "RSA" && param2 === "2"):
+            return <RSAEncrypt />
+
+        case (param1 === "Rabin" && param2 === "1"):
+            return <RabinInfo />
+        case (param1 === "Rabin" && param2 === "2"):
+            return <RabinEncrypt />
+
+        case (param1 === "ElGamal - Zp" && param2 === "1"):
+            return <ElGamalInfo />
+        case (param1 === "ElGamal - Zp" && param2 === "2"):
+            return <ElGamalZpEncrypt />
+
+        case (param1 === "ElGamal - ECC" && param2 === "1"):
+            return <ElGamalEccInfo />
+        case (param1 === "ElGamal - ECC" && param2 === "2"):
+            return <ElGamalEccEncrypt />
+
         default:
             return <InitialInfo />
     }

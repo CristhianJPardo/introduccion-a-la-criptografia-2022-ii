@@ -22,6 +22,10 @@ const AlgorithmAutocomplete = (props) => {
         { id: 7, name: 'S-DES', group: "Block ciphers" },
         { id: 8, name: 'T-DES', group: "Block ciphers" },
         { id: 9, name: 'Gamma Pentagonal', group: "Other Systems" },
+        { id: 10, name: 'RSA', group: "RSA" },
+        { id: 11, name: 'Rabin', group: "Rabin" },
+        { id: 12, name: 'ElGamal - Zp', group: "ElGamal" },
+        { id: 13, name: 'ElGamal - ECC 25519', group: "ElGamal" },
     ];
 
     console.log(selectedAlgorithm2);

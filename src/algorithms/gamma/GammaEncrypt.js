@@ -11,31 +11,700 @@ import IconButton from '@mui/material/IconButton';
 import CasinoIcon from '@mui/icons-material/Casino'
 import { TestGrafo } from './TestGrafo';
 import { TestPermutacion } from './TestPermutacion';
-import grafo_1 from './grafo_1.png'
-import permutacion_1 from './permutacion_1.png'
-import grafo_2 from './grafo_2.png'
-import permutacion_2 from './permutacion_2.png'
-import grafo_3 from './grafo_3.png'
-import permutacion_3 from './permutacion_3.png'
+
 import { useState } from 'react';
 
+// closure of functions for cipher ?
+
+// function drawGammaGraph(nodes, x0, y0, size) {
+//     drawG(nodes, x0, y0, 0, 0, size);
+//     window.addEventListener("keydown", checkKeyPressed, false);
+//     var i = 0;
+//     var j = 0;
+//     function checkKeyPressed(e) {
+//         if (e.keyCode == "37") {
+//             i -= 10;
+//         }
+//         if (e.keyCode == "38") {
+//             j -= 10;
+//         }
+//         if (e.keyCode == "39") {
+//             i += 10;
+//         }
+//         if (e.keyCode == "40") {
+//             j += 10;
+//         }
+//         context.clearRect(0, 0, canvas.width, canvas.height);
+//         drawG(nodes, x0, y0, i, j, size);
+//     }
+// }
+function setLetras(permutation, div = 12, width, height) {
+    var letras = [];
+    var size = permutation.length;
+    var x0 = width / div;
+    var y0 = ((div - 1) * height) / div;
+    var x = width / div;
+    var y = ((div - 1) * height) / div;
+    var i = 0;
+    var j = 0;
+    var fila = [];
+    while (j < alphSize && i < size) {
+        var arr = [];
+        var arr1 = [];
+        arr1.push(x - x0, y - y0);
+        arr.push(arr1);
+        var letra = dict1[(permutation[i] + j) % alphSize];
+        arr.push(letra);
+        fila.push(arr);
+        ++i;
+        x += width / size + 15;
+        if (i == size) {
+            i = 0;
+            x = width / div;
+            j++;
+            y -= height / (alphSize + 2);
+            letras.push(fila);
+            fila = [];
+        }
+    }
+    return letras;
+}
+
+function drawP(permutation, x0 = 0, y0 = 0, context, width, height) {
+    // console.log("this is the permu",permutation)
+    // permutation = Array.from(permutation.toString()).map(Number)
+    console.log("this is the permu", permutation)
+
+    var size = permutation.length;
+    var div = 12;
+    var letras = setLetras(permutation, div, width, height);
+    //lineas del plano
+    var colorLineas = "e28743";
+    //x
+    context.beginPath();
+    context.moveTo(width / div - x0, 0);
+    context.lineTo(width / div - x0, height);
+    context.lineWidth = 1;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //y
+    context.beginPath();
+    context.moveTo(0, ((div - 1) * height) / div - y0);
+    context.lineTo(width, ((div - 1) * height) / div - y0);
+    context.lineWidth = 1;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //lineas del plano
+    //dibujar coordenadas
+    context.beginPath();
+    //context.font = "[style] [variant] [weight] [size]/[line height] [font family]";
+    var sizeFont = 15; //Tamaño letra
+    context.font = sizeFont + "px " + "Consolas, sans-serif";
+    var i = 0;
+    var j = 0;
+    var x = width / div - x0;
+    var y = ((div - 1) * height) / div - y0;
+    context.moveTo(x, y);
+    console.log(letras);
+
+    for (var i = 0; i < alphSize; ++i) {
+        for (var j = 0; j < size; ++j) {
+            var letra = letras[i][j][1];
+            var text = letra + " " + j + "," + i;
+            context.fillText(
+                text,
+                x + letras[i][j][0][0],
+                y + letras[i][j][0][1]
+            );
+        }
+    }
+    context.stroke();
+}
+function drawG(nodes, x0, y0, movX, movY, size, context, width, height) {
+    var div = 20;
+    //lineas del plano
+    var colorLineas = "e28743";
+    var posx = width / div;
+    var posy = ((div - 1) * height) / div;
+    var movx = width / div;
+    var movy = height / div;
+    context.beginPath();
+    context.moveTo(posx - movx * x0 - movX, 0);
+    context.lineTo(posx - movx * x0 - movX, height);
+    context.lineWidth = 2;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //y
+    context.beginPath();
+    context.moveTo(0, posy + movy * y0 - movY);
+    context.lineTo(width, posy + movy * y0 - movY);
+    context.lineWidth = 2;
+    context.strokeStyle = "#" + colorLineas;
+    context.stroke();
+    //lineas del plano
+    //punto inicial
+    context.beginPath();
+    context.lineWidth = 1;
+    context.strokeStyle = "#ff3232";
+    context.fillStyle = "#ff3232";
+    context.arc(posx - movX, posy - movY, 3, 0, 2 * Math.PI, true);
+    context.fill();
+    context.stroke();
+    //grid con nodos de coordenada
+    for (var i = 0; i < size; ++i) {
+        for (var j = 0; j < alphSize; ++j) {
+            context.beginPath();
+            context.lineWidth = 1;
+            context.strokeStyle = "#000000";
+            context.fillStyle = "#000000";
+            context.arc(
+                posx - movx * (x0 - i) - movX,
+                posy + movy * (y0 - j) - movY,
+                1,
+                0,
+                2 * Math.PI,
+                true
+            );
+            context.fill();
+            context.stroke();
+        }
+    }
+    //dibujo y conexiones de nodos
+    for (var i = 0; i < nodes.length; ++i) {
+        var node = nodes[i];
+        if (i != 0) {
+            context.beginPath();
+            context.lineWidth = 0.3;
+            context.strokeStyle = "#30eaf3";
+            context.fillStyle = "#30eaf3";
+            context.arc(
+                posx - movx * (x0 - node.posX) - movX,
+                posy + movy * (y0 - node.posY) - movY,
+                2,
+                0,
+                2 * Math.PI,
+                true
+            );
+            context.fill();
+            context.stroke();
+        }
+        var colorUnion = "009be5";
+        for (var j = 0; j < node.nodeOut.length; ++j) {
+            var pos2X = nodes[map.get(node.nodeOut[j])].posX;
+            var pos2Y = nodes[map.get(node.nodeOut[j])].posY;
+            context.beginPath();
+            context.moveTo(
+                posx - movx * (x0 - node.posX) - movX,
+                posy + movy * (y0 - node.posY) - movY
+            );
+            context.lineTo(
+                posx - movx * (x0 - pos2X) - movX,
+                posy + movy * (y0 - pos2Y) - movY
+            );
+            context.lineWidth = 2;
+            context.strokeStyle = "#" + colorUnion;
+            context.stroke();
+        }
+    }
+}
+
+var rmAccents = function (inputText) {
+    var accents = "ÁÄáäÓÖóöÉËéÇçÍÏíïÚÜúüÑñ";
+    var noAccents = "AAaaOOooEEeeCcIIiiUUuuNn";
+    return inputText
+        .split("")
+        .map(function (chr) {
+            const accentIndex = accents.indexOf(chr);
+            return accentIndex !== -1 ? noAccents[accentIndex] : chr;
+        })
+        .join("");
+};
+
+var normalizeInput = function (inputText) {
+    return rmAccents(inputText)
+        .replaceAll(/[^a-zA-Z]/g, "")
+        .replaceAll(" ", "")
+        .toLowerCase();
+};
+
+function ranPermutation() {
+    var size = Math.floor(Math.random() * 26);
+    while (size == 0) {
+        size = Math.floor(Math.random() * 26);
+    }
+    var arr = new Array(size);
+    for (var i = 0; i < arr.length; i++) arr[i] = i;
+    var j;
+    var temp;
+    for (var i = arr.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;
+}
+
+function isAValidPermutation(permutation) {
+    var dupMap = {};
+    for (var i = 0; i < permutation.length; i++) {
+        if (
+            permutation.length == 0 ||
+            permutation[i] < 0 ||
+            permutation[i] > permutation.length - 1
+        )
+            return false;
+        // Verificar duplicados.
+        if (dupMap[permutation[i]]) return false;
+        dupMap[permutation[i]] = true;
+    }
+    return true;
+}
+const dict1 = {
+    0: "a",
+    1: "b",
+    2: "c",
+    3: "d",
+    4: "e",
+    5: "f",
+    6: "g",
+    7: "h",
+    8: "i",
+    9: "j",
+    10: "k",
+    11: "l",
+    12: "m",
+    13: "n",
+    14: "o",
+    15: "p",
+    16: "q",
+    17: "r",
+    18: "s",
+    19: "t",
+    20: "u",
+    21: "v",
+    22: "w",
+    23: "x",
+    24: "y",
+    25: "z",
+};
+const dict = {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+    f: 5,
+    g: 6,
+    h: 7,
+    i: 8,
+    j: 9,
+    k: 10,
+    l: 11,
+    m: 12,
+    n: 13,
+    o: 14,
+    p: 15,
+    q: 16,
+    r: 17,
+    s: 18,
+    t: 19,
+    u: 20,
+    v: 21,
+    w: 22,
+    x: 23,
+    y: 24,
+    z: 25,
+};
+class Node {
+    constructor(posX, posY, generation) {
+        this.posX = posX;
+        this.posY = posY;
+        this.numIn = 0;
+        this.maxSlope = 0;
+        this.nodeOut = [];
+        this.generation = generation;
+    }
+}
+
+const alphSize = 26;
+var nodes = [];
+var map = new Map();
+
+
+
+
+function posToId(x0, y0, x, y, length) {
+    var len = length;
+    if (x0 < 0) {
+        len += Math.abs(x0);
+    }
+    return (y - y0) * len + (x - x0);
+}
+
+function gammaGraph(x0, y0, length, graphType) {
+    let pos = 0
+    nodes = [];
+    map = new Map();
+    var slopes = [];
+    var maxY = 25;
+    if (y0 <= 0) maxY += Math.abs(y0);
+    if (graphType == 1) {
+        //natural numbers
+        for (var i = 0; i <= maxY; ++i) {
+            slopes.push(i);
+        }
+        nodes.push(new Node(x0, y0, 1));
+        map.set(posToId(x0, y0, x0, y0, length), nodes.length - 1);
+        //console.log(map.get(0));
+        var i = 0;
+        var generation = 1;
+        while (true) {
+            var x = nodes[i].posX + 1;
+            var y = nodes[i].posY + slopes[i];
+            if (x < length && y < alphSize) {
+                nodes.push(new Node(x, y, generation));
+                nodes[i + 1].numIn++;
+                nodes[i + 1].maxSlope = slopes[i];
+                nodes[i].nodeOut.push(posToId(x0, y0, x, y, length));
+                map.set(posToId(x0, y0, x, y, length), nodes.length - 1);
+                ++i;
+            } else {
+                break;
+            }
+        }
+        //                    Generacion 2
+        var size = nodes.length;
+        //console.log(size);
+        generation = 2;
+        for (var i = 1; i < size; ++i) {
+            var j = 0;
+            var index = i;
+            while (true) {
+                var x = nodes[index].posX + 1;
+                var y = nodes[index].posY + slopes[j];
+                var id = posToId(x0, y0, x, y, length);
+                if (map.get(id) >= 0) {
+                    pos = map.get(id);
+                } else {
+                    pos = -1;
+                }
+                if (x < length && y < alphSize) {
+                    if (pos == -1) {
+                        nodes.push(new Node(x, y, generation));
+                        pos = nodes.length - 1;
+                        map.set(posToId(x0, y0, x, y, length), pos);
+                    }
+                    var exists = false;
+                    for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+                        if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists) {
+                        nodes[pos].numIn++;
+                        nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+                        nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+                    }
+                    ++j;
+                    index = pos;
+                } else {
+                    break;
+                }
+            }
+        }
+        //                    Generacion 3
+        generation = 3;
+        var maxId =
+            (length + Math.abs(Math.min(x0, 0))) *
+            (alphSize + Math.abs(Math.min(y0, 0)));
+        for (var i = 0; i <= maxId; ++i) {
+            if (map.get(i) >= 0) {
+                var node = nodes[map.get(i)];
+                if (node.generation == 2) {
+                    var j = 0;
+                    var index = map.get(i);
+                    var maxSlope = node.maxSlope;
+                    while (slopes[j] <= maxSlope) {
+                        var x = nodes[index].posX + 1;
+                        var y = nodes[index].posY + slopes[j];
+                        var id = posToId(x0, y0, x, y, length);
+                        if (map.get(id) >= 0) {
+                            pos = map.get(id);
+                        } else {
+                            pos = -1;
+                        }
+                        if (x < length && y < alphSize) {
+                            if (pos == -1) {
+                                nodes.push(new Node(x, y, generation));
+                                pos = nodes.length - 1;
+                                map.set(posToId(x0, y0, x, y, length), pos);
+                                nodes[pos].numIn++;
+                            }
+                            var exists = false;
+                            for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+                                if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+                            if (!exists) {
+                                nodes[pos].numIn++;
+                                nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+                                nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+                            }
+                            ++j;
+                            index = pos;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        //triangular numbers
+        for (var i = 0; (i * (i + 1)) / 2 <= maxY; ++i) {
+            slopes.push((i * (i + 1)) / 2);
+        }
+        nodes.push(new Node(x0, y0, 1));
+        map.set(posToId(x0, y0, x0, y0, length), nodes.length - 1);
+        //console.log(map.get(0));
+        var i = 0;
+        //                    Generacion 1
+        var generation = 1;
+        while (true) {
+            var x = nodes[i].posX + 1;
+            var y = nodes[i].posY + slopes[i];
+            if (x < length && y < alphSize) {
+                nodes.push(new Node(x, y, generation));
+                nodes[i + 1].numIn++;
+                nodes[i + 1].maxSlope = slopes[i];
+                nodes[i].nodeOut.push(posToId(x0, y0, x, y, length));
+                map.set(posToId(x0, y0, x, y, length), nodes.length - 1);
+                ++i;
+            } else {
+                break;
+            }
+        }
+        //                    Generacion 2
+        var size = nodes.length;
+        //console.log(size);
+        generation = 2;
+        for (var i = 1; i < size; ++i) {
+            var j = 0;
+            var index = i;
+            while (true) {
+                var x = nodes[index].posX + 1;
+                var y = nodes[index].posY + slopes[j];
+                var id = posToId(x0, y0, x, y, length);
+                if (map.get(id) >= 0) {
+                    pos = map.get(id);
+                } else {
+                    pos = -1;
+                }
+                if (x < length && y < alphSize) {
+                    if (pos == -1) {
+                        nodes.push(new Node(x, y, generation));
+                        pos = nodes.length - 1;
+                        map.set(posToId(x0, y0, x, y, length), pos);
+                    }
+                    var exists = false;
+                    for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+                        if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists) {
+                        nodes[pos].numIn++;
+                        nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+                        nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+                    }
+                    ++j;
+                    index = pos;
+                } else {
+                    break;
+                }
+            }
+        }
+        //                    Generacion 3
+        generation = 3;
+        var maxId =
+            (length + Math.abs(Math.min(x0, 0))) *
+            (alphSize + Math.abs(Math.min(y0, 0)));
+        for (var i = 0; i <= maxId; ++i) {
+            if (map.get(i) >= 0) {
+                var node = nodes[map.get(i)];
+                if (node.generation == 2) {
+                    var j = 1;
+                    var index = map.get(i);
+                    var maxSlope = node.maxSlope;
+                    while (slopes[j] <= maxSlope) {
+                        var x = nodes[index].posX + 1;
+                        var y = nodes[index].posY + slopes[j];
+                        var id = posToId(x0, y0, x, y, length);
+                        if (map.get(id) >= 0) {
+                            pos = map.get(id);
+                        } else {
+                            pos = -1;
+                        }
+                        if (x < length && y < alphSize) {
+                            if (pos == -1) {
+                                nodes.push(new Node(x, y, generation));
+                                pos = nodes.length - 1;
+                                map.set(posToId(x0, y0, x, y, length), pos);
+                                nodes[pos].numIn++;
+                            }
+                            var exists = false;
+                            for (var k = 0; k < nodes[index].nodeOut.length; ++k) {
+                                if (nodes[index].nodeOut[k] == posToId(x0, y0, x, y, length)) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+                            if (!exists) {
+                                nodes[pos].numIn++;
+                                nodes[pos].maxSlope = Math.max(slopes[j], nodes[pos].maxSlope);
+                                nodes[index].nodeOut.push(posToId(x0, y0, x, y, length));
+                            }
+                            ++j;
+                            index = pos;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return nodes;
+}
+
+function calculatePosition(shiftNumber, letter) {
+    var res = dict[letter] - shiftNumber;
+    res = (res + alphSize) % alphSize;
+    return res;
+}
+
+function cipher(x0, y0, permutation, clearText, graphType) {
+    console.log("parameteres are", typeof (x0), typeof (y0), typeof (permutation), typeof (clearText), typeof (graphType))
+    console.log("parameteres are", (x0), (y0), (permutation), (clearText), (graphType))
+    if (!isAValidPermutation(permutation)) {
+        console.log("WHOOPS");
+        return;
+    }
+    var text = normalizeInput(clearText);
+    let size = permutation.length;
+    nodes = gammaGraph(x0, y0, size, graphType);
+    //console.log(nodes);
+    var cipheredText = "";
+    var position = 0;
+    for (var i = 0; i < text.length; ++i) {
+        var y = calculatePosition(permutation[position], text[i]);
+        var shift = 0;
+        if (map.get(posToId(x0, y0, position, y, size)) >= 0) {
+            shift = nodes[map.get(posToId(x0, y0, position, y, size))].numIn;
+        }
+        cipheredText += "(";
+        cipheredText += ((shift + dict[text[i]]) % alphSize) + "," + y;
+        cipheredText += ")";
+        if (i < text.length - 1) cipheredText += ",";
+        ++position;
+        position %= size;
+    }
+    return cipheredText;
+}
+function decipher(x0, y0, permutation, cipherText, graphType) {
+    if (!isAValidPermutation(permutation)) {
+        console.log("WHOOPS");
+        return;
+    }
+    let size = permutation.length;
+    var clearText = "";
+    var position = 0;
+    for (var i = 0; i < cipherText.length; ++i) {
+        if (cipherText[i] == "(") {
+            ++i;
+            var a = "";
+            while (cipherText[i] != ",") {
+                a += cipherText[i];
+                ++i;
+            }
+            ++i;
+            var b = "";
+            while (cipherText[i] != ")") {
+                b += cipherText[i];
+                ++i;
+            }
+            console.log(a, b);
+        } else continue;
+        var c = parseInt(b);
+        nodes = gammaGraph(x0, y0, size, graphType);
+        var shift = 0;
+        if (map.get(posToId(x0, y0, a, b, size)) >= 0) {
+            shift = nodes[map.get(posToId(x0, y0, a, b, size))].numIn;
+        }
+        clearText += dict1[(c + permutation[position]) % alphSize];
+        ++position;
+        position %= size;
+    }
+
+    return clearText;
+}
+
+console.log("TEST TEST")
+console.log(cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "thealmond", 1));
+console.log(
+    decipher(
+        -8,
+        -6,
+        [3, 0, 2, 7, 9, 6, 1, 5, 4, 8],
+        cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "thealmond", 1),
+        1
+    ))
+
+
+console.log("TEST TEST")
+
+// closure of functions for cipher ?
+
+const validatePermutation = (input) => { //this one assumes 10 length
+    let isNumber = /^-?[1-9]+[0-9]*$/.test(input);
+    let key = Array.from(input.toString()).map(Number);
+    let expectedKey = Array.from({ length: key.length }, (_, i) => i)
+    // console.log(JSON.stringify(key.sort()))
+    // console.log(JSON.stringify(expectedKey))
+    let validKey = JSON.stringify(key.sort()) === JSON.stringify(expectedKey);
+    let validLength = key.length >= 10 && key.length <= 10;
+    console.log("an error?", (isNumber && validKey && validLength) == false)
+    return (isNumber && validKey && validLength);
+}
 export const GammaEncrypt = (props) => {
     const [base, setBase] = useState(false)
-    const [x, setX] = useState("")
-    const [y, setY] = useState("")
-    const [permutation, setPermutation] = useState("")
-    const [clearText, setClearText] = useState("")
+    const [x, setX] = useState("0")
+    const [y, setY] = useState("0")
+    const [globalPlainText, setPlain] = useState("attackatdawn")
+    const [globalPermu, setPermu] = useState("0123456789")
+    const [baseCipherText, setCipher] = useState("")
+    const [toUncipher, setToUncipher] = useState("")
+    const [graphType, setGraph] = useState(1)
+    const [decryptedText, setDecryptedText] = useState("")
+
     const clear = () => {
         setBase(false);
         setX("");
         setY("");
-        setPermutation("");
-        setClearText("");
-    }
-
-    const validBase = () => {
+        setBase(false);
 
     }
+
+    // const decryptGamma = () => {
+    //     setTimeout(
+    //         setDecryptedText(""),1000)
+    // }
+
     return (
         <div>
             {/* <Typography sx={{ mb: 2 }}>
@@ -51,11 +720,16 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an integer"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        setX(e.target.value)
+                        // validateAlphabet(e.target.value);
+                        if (e.target.value != "") {
+                            setX((e.target.value))
+                        }
+                        else setX(0)
+                        // // console.log(a)
                     }}
                     disabled={false}
                     error={false}
-                    value={x}
+                // value={x}
                 />
                 <TextField
                     id="param2"
@@ -64,116 +738,146 @@ export const GammaEncrypt = (props) => {
                     helperText="Must be an integer"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        setY(e.target.value)
+                        if (e.target.value != "") {
+                            setY((e.target.value))
+                        }
+                        else setY(0)
+                        // validateAlphabet(e.target.value);
+                        // setAlphabet(e.target.value)
+                        // // console.log(a)
                     }}
                     disabled={false}
                     error={false}
-                    value={y}
+                // value={"alphabet"}
                 />
                 <TextField
                     id="param3"
                     label='Enter permutation'
-                    placeholder="0, 1, 2, 3, 4, 5, 6, 7, 8, 9"
-                    helperText="Must be comma separated list of integers"
+                    placeholder="0123456789"
+                    helperText="Must be list of naturals below 10 reordered"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        setPermutation(e.target.value)
+                        if (e.target.value != "" && validatePermutation(e.target.value)) {
+                            validatePermutation(e.target.value)
+                            let cache = Array.from(e.target.value.toString()).map(Number);
+                            setPermu(cache)
+                        }
+                        else {
+                            let cache = Array.from(e.target.value.toString()).map(Number);
+                            setPermu(cache)
+                        }
+
+                        // validateAlphabet(e.target.value);
+                        // setAlphabet(e.target.value)
+                        console.log(e)
                     }}
                     disabled={false}
                     error={false}
-                    value={permutation}
+                // value={"alphabet"}
                 />
                 <TextField
                     id="param4"
                     label='Clear text'
-                    placeholder="attackatdown"
+                    placeholder="attackatdawn"
                     helperText="Must be an string"
                     sx={{ width: "300px", mb: 2, ml: 5 }}
                     onChange={e => {
-                        setClearText(e.target.value)
+                        if (e.target.value != "") {
+                            setPlain(e.target.value);
+                        }
+                        else setPlain("attackatdawn");
+
+
+
+
+
+                        // validateAlphabet(e.target.value);
+                        // setAlphabet(e.target.value)
+                        // // console.log(a)
                     }}
                     disabled={false}
                     error={false}
-                    value={clearText}
+                // value={"alphabet"}
+                />
+                <TextField
+                    id="param6"
+                    label='Enter graph type'
+                    placeholder="1"
+                    helperText="Must be 1 or 0"
+                    sx={{ width: "300px", mb: 2, ml: 5 }}
+                    onChange={e => {
+                        // validateAlphabet(e.target.value);
+                        setGraph(e.target.value)
+                    }}
+                    disabled={false}
+                    error={false}
                 />
                 <Button
                     variant="contained"
                     color="primary"
                     sx={{ mr: 0.5, ml: 5, mt: 1 }}
                     onClick={() => {
+                        // console.log("equal permutations?? ",[3, 0, 2, 7, 9, 6, 1, 5, 4, 8][0]===globalPermu[0])
+                        // console.log(typeof([3, 0, 2, 7, 9, 6, 1, 5, 4, 8]))
+                        // console.log(typeof(globalPermu))
+                        // console.log("parameters are ",x," ", y," ",globalPermu," ",globalPlainText);
+                        setCipher(cipher(parseInt(x), parseInt(y), globalPermu, globalPlainText, 1))
+                        setBase(true)
+
+
+                        //seccion grafo
+
+                        var canvas = document.querySelector("#myCanvas");
+                        var context = canvas.getContext("2d");
+                        var width = canvas.width;
+                        var height = canvas.height;
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+                        if (graphType != "0" || graphType != "1") {
+                            setGraph(parseInt(graphType) % 2)
+                        }
+                        var nodes = gammaGraph(parseInt(x), parseInt(y), globalPermu.length, parseInt(graphType));
+                        console.log(nodes);
+                        drawG(nodes, x, y, 0, 0, globalPermu.length, context, width, height);
+
+                        // fin seccion grafo
+                        // seccion permu
+
+                        setTimeout(
+                            () => {
+                                var canvas = document.querySelector("#myCanvas2");
+                                var context = canvas.getContext("2d");
+                                var width = canvas.width;
+                                var height = canvas.height;
+                                context.clearRect(0, 0, canvas.width, canvas.height);
+                                drawP(globalPermu, 0, 0, context, width, height)
+
+                            },
+                            100
+                        )
+
+
                         setTimeout(
                             () => { setBase(true) },
-                            2000
+                            100
                         )
+
+
                     }}
                     disabled={false}
 
                 >Generate!</Button>
 
             </Grid>
-
-            {(base && x == '-8') ? <img
-                className='center'
-                src={grafo_1}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {(base && x == '-8') ? <img
-                className='center'
-                src={permutacion_1}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
+            {<canvas className='center canvas' id="myCanvas" width="640vw" height="700vh" ></canvas>}
+            {<br></br>}
+            {<canvas className='center canvas' id="myCanvas2" width="640vw" height="700vh" ></canvas>}
+            {<br></br>}
             {
-                (base && x == '-8') ? "(22,19),(4,21),(0,21),(23,11),(5,25),(4,23),(16,9),(12,22),(23,18),(7,0),(0,23),(23,12),(4,25),(4,24),(25,22),(8,4),(25,16),(23,11),(4,4),(7,22),(7,2),(18,5),(20,12),(9,1),(0,19),(17,9),(3,1),(19,9),(4,4),(7,22),(20,15),(18,5),(8,0),(1,18),(7,3),(3,22),(22,15),(21,10),(20,15),(14,7),(2,25),(14,1),(4,25),(22,13),(25,21),(3,22),(0,17),(8,20),(7,7),(9,23),(20,15),(22,13),(10,2),(12,2),(2,1),(7,3),(16,9),(6,18),(24,19),(9,23),(17,14),(1,18),(4,25),(5,22),(5,25),(16,8),(4,2),(1,14),(23,17),(8,1),(20,15),(24,10),(22,17),(0,20),(23,18),(6,24),(7,5),(12,22),(23,18),(14,7),(17,14),(6,23),(17,6),(0,20),(22,17),(23,14),(4,2),(21,10),(2,22),(9,23),(17,14),(4,21),(18,13),(19,8),(17,11),(4,0),(18,12),(8,23),(24,19),(7,0),(9,1),(7,22),(13,3),(23,11),(22,17),(0,15),(4,2),(0,15),(0,0),(12,5),(15,12),(15,2),(4,25),(22,12),(12,7),(17,9),(0,17),(13,25),(4,4),(7,0),(11,5),(21,9),(20,14),(19,8),(21,16),(1,20),(18,12),(8,23),(2,22),(9,23),(0,23),(17,8),(0,21),(3,21),(16,10),(4,0),(0,17),(12,22),(2,2),(7,0),(15,10),(18,5),(17,6),(19,8),(10,5),(1,20),(20,13),(12,22),(18,14),(15,8),(11,8),(4,21),(22,17),(19,8),(21,16),(4,0),(0,17),(13,25),(4,4),(12,5),(19,16),(18,5),(10,2),(0,20),(21,20),(4,0),(7,24),(12,4),(18,14),(17,10),(9,1),(2,19),(16,9),(17,6),(9,4),(18,10),(22,15),(23,11),(0,0),(7,20),(11,8),(4,21),(17,6),(12,2),(9,4),(4,0),(7,24),(13,5),(3,3),(25,15),(9,1),(21,9),(20,14),(12,2),(16,10),(15,7),(3,1),(14,6),(6,6),(11,4),(0,23),(21,9),(18,13),(4,24),(22,17),(7,3),(4,2),(11,3),(20,15),(2,17),(14,11),(20,11),(18,13),(4,24),(7,3),(3,22),(17,11),(10,21),(2,22),(6,19),(19,16),(2,19),(10,2),(4,24),(22,17),(6,2),(8,6),(0,13),(4,4),(2,17),(14,11),(20,11),(10,2),(4,24),(16,10),(20,11),(5,3),(25,12),(11,11),(8,1),(15,10),(7,22),(16,9),(23,11),(17,11),(3,22),(0,17),(8,0),(18,14),(13,6),(1,24),(20,11),(20,14),(17,6),(21,13),(8,25),(4,2),(19,9),(17,13),(25,15),(9,1),(0,17),(20,12),(0,20),(1,0),(15,7),(4,2),(10,21),(4,4),(21,14),(11,5),(2,19),(4,25),(22,12),(5,25),(23,13),(4,2),(12,4),(18,14),(17,10),(9,1),(2,19),(16,9),(17,6),(18,14),(15,7),(8,6),(8,20),(0,0),(19,12),(9,1),(3,20),(20,14),(9,1),(7,3),(1,20),(7,24),(19,9),(4,4),(9,23),(11,8),(4,21),(4,23),(22,13),(21,16),(18,10),(17,11),(8,0),(2,2),(6,19),(15,10),(3,20),(20,14),(9,1),(7,3),(1,20),(0,18),(21,10),(4,4),(19,12),(10,4),(4,21),(13,3),(19,7),(23,18),(4,0),(22,15),(13,5),(4,4),(19,12),(19,16),(18,5),(4,23),(19,8),(16,10),(15,7),(4,2),(8,20),(24,19),(18,11),(19,16),(18,5),(20,12),(4,24),(5,25),(17,9),(3,1),(21,10),(4,4),(13,6),(6,0),(3,20),(13,3),(7,25),(9,4),(4,0),(22,15),(12,22),(17,13),(19,12),(12,7),(8,25),(16,8),(6,23),(22,17),(18,10),(5,3),(8,0),(17,13),(11,24),(14,11),(17,8),(18,7),(0,20),(23,18),(8,4),(18,12),(13,5)" : ""
+                base ? baseCipherText : ""
             }
-            {/* ejemplo 2 */}
-            {(base && x == '5') ? <img
-                className='center'
-                src={grafo_2}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {(base && x == '5') ? <img
-                className='center'
-                src={permutacion_2}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {
-                (base && x == '5') ? "(19,19),(7,5),(4,1),(5,25),(8,4),(17,16),(18,11),(19,10),(15,10),(16,6),(15,15),(20,18),(11,8),(0,20),(17,13),(4,3),(11,4),(4,21),(2,23),(20,11),(17,17),(14,12),(13,10),(8,2),(2,24),(22,21),(4,23),(0,17),(17,12),(0,18),(1,1),(11,9),(4,1),(19,13),(4,0),(2,1),(7,0),(13,4),(14,9),(11,3),(14,14),(6,4),(24,21),(22,16),(0,22),(18,17),(5,24),(8,25),(19,14),(15,5),(4,4),(18,16),(18,15),(19,13),(17,13),(0,25),(2,21),(10,1),(4,25),(17,9),(18,18),(11,9),(8,5),(10,4),(4,0),(5,4),(8,1),(19,10),(1,22),(8,0),(19,19),(18,16),(22,19),(7,1),(8,4),(2,1),(7,0),(1,18),(4,25),(2,20),(0,0),(12,10),(4,1),(15,9),(14,10),(15,14),(20,13),(11,2),(0,21),(17,9),(8,8),(13,11),(19,16),(7,1),(4,0),(18,17),(19,12),(7,24),(4,25),(24,16),(12,12),(14,12),(13,10),(8,2),(19,15),(14,13),(17,10),(24,15),(14,9),(20,12),(17,17),(7,5),(4,1),(0,20),(17,13),(19,18),(0,19),(13,4),(3,24),(12,4),(14,14),(21,19),(4,1),(12,6),(4,0),(13,12),(19,12),(0,17),(14,8),(3,21),(7,7),(4,2),(11,8),(15,9),(24,20),(14,13),(20,13),(10,1),(4,25),(4,22),(15,15),(5,3),(8,5),(19,13),(13,9),(14,13),(22,15),(22,13),(4,25),(0,18),(17,17),(0,24),(1,24),(11,5),(4,0),(19,18),(4,23),(2,19),(7,2),(15,5),(14,14),(11,9),(14,11),(6,0),(24,20),(7,6),(4,23),(11,2),(15,10),(18,10),(15,15),(4,2),(14,11),(15,9),(11,7),(4,3),(18,11),(19,10),(0,21),(24,16),(7,7),(4,2),(0,23),(11,5),(19,15),(7,6),(24,17),(8,25),(14,8),(15,5),(4,4),(22,20),(22,19),(0,20),(24,20),(18,17),(5,24),(15,5),(17,12),(4,22),(23,23),(0,24),(12,9),(15,9),(11,7),(4,3),(19,12),(7,24),(4,25),(8,0),(19,19),(1,25),(17,14),(0,20),(8,4),(18,17),(0,19),(16,6),(0,21),(20,11),(2,2),(7,5),(22,19),(14,8),(12,8),(4,3),(13,6),(22,13),(4,25),(0,18),(17,17),(8,6),(19,16),(8,2),(13,9),(18,17),(8,1),(3,20),(4,25),(20,11),(7,7),(4,2),(8,5),(17,11),(1,23),(17,16),(0,19),(18,9),(0,21),(15,5),(3,3),(8,6),(19,16),(2,22),(7,3),(4,3),(2,21),(10,1),(18,13),(5,23),(14,14),(17,15),(1,24),(17,11),(4,0),(0,25),(18,11),(19,10),(2,23),(0,18),(13,13),(2,0),(4,1),(17,11),(7,3),(4,3),(0,19),(17,8),(19,14),(6,24),(20,20),(8,6),(3,0),(4,24),(11,7),(14,13),(14,7),(10,1),(18,13),(11,3),(8,8),(10,8),(4,1),(0,20),(18,14),(12,11),(0,19),(17,8),(19,14),(22,14),(0,0),(19,17),(2,25),(7,1),(1,23),(20,19),(19,12),(8,25),(19,14),(2,20),(0,0),(13,11),(12,9),(4,24),(0,22),(18,17),(20,13),(17,8),(4,25),(1,19),(11,11),(14,12),(14,11),(3,23),(15,11),(17,16),(4,23),(18,9),(18,13),(20,12),(17,17),(4,2),(8,5),(19,13),(2,24),(0,25),(13,6),(0,17),(13,6),(18,10),(14,14),(19,17),(17,14),(0,20),(2,24),(10,9),(8,1),(13,4),(5,0),(16,6),(17,17),(12,10),(0,23),(19,13),(8,4),(14,13),(13,6),(0,17),(1,22),(16,6),(20,20),(19,17),(0,23),(15,9),(4,0),(17,16),(18,11),(15,5),(14,8),(18,10),(11,11),(8,6),(5,2),(4,24),(18,14),(19,18),(24,17),(11,2),(4,25),(5,23),(14,14),(17,15),(4,1),(23,17),(0,22),(12,11),(15,8),(11,2),(4,25),(7,25),(14,14),(22,20),(12,9),(20,14),(2,24),(7,6),(19,12),(7,24),(4,25),(24,16),(4,4),(23,21),(4,1),(17,11),(2,24),(8,7),(18,11),(4,21),(19,14),(7,25),(4,4),(13,11),(8,5),(19,13),(18,14),(7,6),(0,19),(17,8),(4,25),(18,10),(19,19),(7,5),(8,5),(18,12),(8,4),(13,12),(5,24),(15,5),(17,12),(12,4),(0,0),(19,17),(8,5),(14,8),(13,9),(22,21),(8,1),(19,10),(7,2),(0,18),(3,3),(14,12),(2,25),(19,13),(14,10),(17,16),(18,11),(15,5),(19,14),(7,25),(0,0),(19,17),(19,16),(7,1),(4,0),(3,2),(14,7),(2,19),(19,14),(16,6),(17,17),(2,0),(0,23),(13,7),(6,2),(8,7),(21,14),(4,21),(1,22),(4,22),(19,19),(19,17),(4,1),(17,11),(0,22),(3,2),(21,14),(8,25),(2,23),(4,22),(18,18),(12,10),(0,23),(17,11),(19,15),(18,17),(11,4),(4,21),(4,25),(16,7),(8,8),(18,16),(0,23),(18,12),(14,10),(5,4),(19,12),(7,24),(4,25),(0,18),(3,3),(1,25),(0,23),(13,7),(3,25),(8,7),(19,12),(7,24),(4,25),(11,3),(15,15),(18,16),(15,12),(4,24),(14,10),(15,14),(11,4),(4,21),(19,14),(16,6),(18,18),(11,9),(4,1),(4,24),(15,11),(1,0),(4,23),(19,10),(19,14),(4,22),(17,17),(8,6),(19,16),(2,22),(14,10),(11,10),(11,4),(4,21),(2,23),(20,11),(18,18),(8,6),(13,10),(5,25),(14,10),(17,16),(13,5),(0,17),(19,14),(8,0),(14,14),(13,11),(0,23),(1,21),(14,10),(20,19),(19,12),(16,6),(4,25),(16,6),(15,15),(11,9),(4,1),(18,12),(18,14),(11,10),(4,23),(4,21),(15,10),(16,7),(0,0),(19,17),(19,16),(4,24),(17,13),(13,12),(18,11),(6,23),(8,3),(21,13),(4,4),(18,16),(0,23),(3,23),(21,17),(8,7),(2,21),(4,21),(0,21),(15,5),(3,3),(12,10),(0,23),(10,4),(4,0),(18,17),(18,11),(15,5),(20,15),(15,5),(3,3),(18,16),(19,16),(14,8),(7,3),(4,3),(11,4),(16,6),(15,10),(4,22),(14,14),(15,13),(11,8),(4,24),(5,1),(0,25),(11,4),(11,2),(0,21),(18,10),(11,11),(4,2),(4,1),(15,9)" : ""
-            }
-            {/* ejemplo 3 */}
-            {(base && x == '0') ? <img
-                className='center'
-                src={grafo_3}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {(base && x == '0') ? <img
-                className='center'
-                src={permutacion_3}
-                alt='imagen 1'
-                style={{
-                    width: "500px",
-                }}
-            /> : ""}
-            {
-                (base && x == '0') ? "(19,10),(7,25),(5,1),(6,3),(9,2),(17,16),(18,13),(19,19),(17,8),(18,10),(15,6),(20,12),(11,8),(0,24),(17,11),(6,3),(14,6),(8,4),(4,21),(22,15),(17,8),(14,6),(13,10),(8,6),(2,22),(22,21),(4,25),(0,0),(20,10),(2,22),(1,18),(11,3),(5,1),(19,17),(4,24),(5,1),(10,2),(13,13),(19,7),(15,7),(14,5),(6,24),(24,21),(22,20),(0,20),(18,17),(5,0),(8,8),(20,12),(17,9),(4,21),(18,10),(18,15),(19,17),(17,11),(0,25),(2,23),(12,10),(4,23),(20,13),(18,9),(11,3),(8,5),(10,8),(4,24),(7,4),(12,3),(19,19),(1,20),(11,4),(19,10),(18,10),(22,19),(7,5),(9,2),(5,1),(10,2),(1,1),(4,23),(2,24),(0,17),(12,4),(5,1),(15,13),(14,8),(15,14),(21,15),(13,11),(0,19),(20,13),(8,25),(13,5),(19,16),(7,5),(4,24),(18,17),(19,14),(10,7),(4,23),(24,20),(12,3),(14,6),(13,10),(8,6),(19,13),(14,13),(17,12),(24,24),(19,7),(25,16),(17,8),(7,25),(5,1),(0,24),(17,11),(19,18),(0,21),(13,13),(3,22),(16,8),(14,5),(21,13),(5,1),(12,10),(4,24),(13,12),(19,14),(0,0),(16,6),(3,25),(7,24),(4,22),(11,8),(15,13),(24,18),(14,13),(21,15),(12,10),(4,23),(4,0),(15,6),(5,23),(8,5),(19,17),(13,7),(14,13),(22,17),(22,22),(4,23),(2,22),(17,8),(0,18),(1,24),(11,9),(4,24),(19,18),(4,25),(5,2),(7,0),(17,9),(14,5),(11,3),(14,11),(6,4),(24,18),(9,6),(4,25),(13,11),(17,8),(18,14),(15,6),(4,22),(14,11),(15,13),(11,5),(6,3),(18,13),(19,19),(0,19),(24,20),(7,24),(4,22),(0,23),(11,9),(19,13),(9,6),(24,19),(8,8),(16,6),(17,9),(4,21),(22,14),(22,19),(0,24),(24,18),(18,17),(5,0),(14,14),(20,10),(4,0),(23,14),(0,18),(12,9),(15,13),(11,5),(6,3),(19,14),(10,7),(4,23),(11,4),(19,10),(1,19),(17,14),(0,24),(9,2),(18,17),(0,21),(17,15),(0,19),(22,15),(2,19),(7,25),(22,19),(14,12),(13,6),(6,3),(13,8),(22,22),(4,23),(2,22),(17,8),(9,0),(19,16),(8,6),(13,7),(18,17),(12,3),(6,3),(4,23),(22,15),(7,24),(4,22),(8,5),(17,15),(1,21),(17,16),(0,21),(18,18),(0,19),(17,9),(3,20),(9,0),(19,16),(3,0),(9,1),(6,3),(2,23),(12,10),(21,11),(5,1),(14,5),(17,9),(1,24),(17,15),(4,24),(0,25),(18,13),(19,19),(4,21),(2,22),(13,4),(2,20),(5,1),(17,15),(9,1),(6,3),(0,21),(17,17),(20,12),(6,2),(20,11),(9,0),(4,0),(4,2),(11,5),(14,13),(14,9),(12,10),(21,11),(15,7),(8,25),(10,2),(5,1),(0,24),(18,12),(12,11),(0,21),(17,17),(20,12),(24,18),(0,17),(19,11),(2,25),(7,5),(1,21),(20,19),(19,14),(8,8),(20,12),(2,24),(0,17),(13,5),(12,9),(4,2),(0,20),(18,17),(21,15),(17,17),(4,23),(1,23),(11,2),(14,6),(14,11),(5,1),(15,9),(17,16),(4,25),(18,18),(21,11),(25,16),(17,8),(4,22),(8,5),(19,17),(2,22),(0,25),(13,8),(0,0),(13,4),(18,14),(14,5),(19,11),(17,14),(0,24),(2,22),(10,9),(12,3),(13,13),(5,24),(18,10),(17,8),(12,4),(0,23),(19,17),(9,2),(14,13),(13,8),(0,0),(1,20),(18,10),(20,11),(19,11),(0,23),(15,13),(4,24),(17,16),(18,13),(14,14),(16,6),(18,14),(11,2),(9,0),(5,2),(4,2),(18,12),(19,18),(24,19),(13,11),(4,23),(5,1),(14,5),(17,9),(5,1),(23,21),(0,20),(12,11),(17,10),(13,11),(4,23),(7,3),(14,5),(22,14),(12,9),(20,18),(2,22),(9,6),(19,14),(10,7),(4,23),(24,20),(4,21),(23,15),(5,1),(17,15),(2,22),(8,7),(18,13),(8,4),(20,12),(7,3),(4,21),(13,5),(8,5),(19,17),(18,12),(9,6),(0,21),(17,17),(4,23),(18,14),(19,10),(7,25),(8,5),(18,16),(9,2),(13,12),(5,0),(14,14),(20,10),(16,8),(0,17),(19,11),(8,5),(14,12),(13,7),(22,21),(12,3),(19,19),(7,0),(2,22),(3,20),(14,6),(2,25),(19,17),(14,8),(17,16),(18,13),(14,14),(20,12),(7,3),(0,17),(19,11),(19,16),(7,5),(4,24),(5,2),(14,9),(5,2),(20,12),(18,10),(17,8),(2,20),(0,23),(13,11),(8,0),(8,7),(21,16),(8,4),(1,20),(4,0),(19,10),(19,11),(5,1),(17,15),(0,20),(5,2),(21,16),(8,8),(4,21),(4,0),(18,9),(12,4),(0,23),(17,15),(19,13),(18,17),(14,6),(8,4),(4,23),(19,11),(8,25),(18,10),(0,23),(18,16),(14,8),(7,4),(19,14),(10,7),(4,23),(2,22),(3,20),(1,19),(0,23),(13,11),(3,23),(8,7),(19,14),(10,7),(4,23),(15,7),(15,6),(18,10),(15,12),(4,2),(14,8),(15,14),(14,6),(8,4),(20,12),(18,10),(18,9),(11,3),(5,1),(4,2),(15,9),(3,0),(4,25),(19,19),(20,12),(4,0),(17,8),(9,0),(19,16),(3,0),(14,8),(12,10),(14,6),(8,4),(4,21),(22,15),(18,9),(9,0),(13,10),(6,3),(14,8),(17,16),(14,7),(0,0),(20,12),(11,4),(14,5),(13,5),(0,23),(1,25),(14,8),(20,19),(19,14),(17,15),(4,23),(18,10),(15,6),(11,3),(5,1),(18,16),(18,12),(12,10),(4,25),(8,4),(17,8),(19,11),(0,17),(19,11),(19,16),(4,2),(17,11),(13,12),(18,13),(9,6),(8,1),(21,17),(4,21),(18,10),(0,23),(5,1),(21,15),(8,7),(2,23),(8,4),(0,19),(17,9),(3,20),(12,4),(0,23),(10,8),(4,24),(18,17),(18,13),(14,14),(22,13),(17,9),(3,20),(18,10),(19,16),(14,12),(9,1),(6,3),(14,6),(17,15),(17,8),(4,0),(14,5),(15,7),(11,8),(4,2),(5,25),(0,25),(14,6),(13,11),(0,19),(18,14),(11,2),(4,22),(5,1),(15,13)" : ""
-            }
-
-
-            <Button
+            {/* <Button
                 variant='contained'
                 color='secondary'
                 sx={{
@@ -183,7 +887,18 @@ export const GammaEncrypt = (props) => {
                 onClick={clear}
             >
                 Clear
-            </Button>
+            </Button> */}
+            {/* <Button
+                variant='contained'
+                color='secondary'
+                sx={{
+                    ml: '50%', mr: '50%'
+
+                }}
+            // onClick={decryptGamma}
+            >
+                Decrypt
+            </Button> */}
         </div>
 
     )
