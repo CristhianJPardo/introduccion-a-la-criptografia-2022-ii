@@ -9,6 +9,8 @@ export const ElGamalZpEncrypt = (props) => {
 
     const [textoEntrada, setTextoEntrada] = useState("")
     const [textRecibido, setTextoRecibido] = useState("")
+    const [c, setC] = useState("")
+    const [A, setA] = useState("")
     const [decipheredText, setDecipheredText] = useState("")
     const [key, setKey] = useState("")
 
@@ -18,10 +20,12 @@ export const ElGamalZpEncrypt = (props) => {
         }
         try {
             const resp = await axios.post(
-                "http://localhost:8000/upload_sdes_encrypt/"
-                + "?" + (new URLSearchParams({ key: key })).toString()
+                "http://localhost:8000/elgamalzp_encrypt/"
+                // + "?" + (new URLSearchParams({ key: key })).toString()
                 , data)
-            setTextoRecibido(resp.data)
+            setTextoRecibido(resp.data);
+            setC(resp.data.encrypted);
+            setA(resp.data.publicKey);
             console.log(resp.data)
 
         } catch (err) {
@@ -40,6 +44,8 @@ export const ElGamalZpEncrypt = (props) => {
         setTextoEntrada("");
         setTextoRecibido("");
         setDecipheredText("");
+        setC("");
+        setA("");
         setKey("")
     }
 
@@ -56,31 +62,15 @@ export const ElGamalZpEncrypt = (props) => {
     return (
         <Box>
             <Grid
-                sx={{ display: 'grid', gap: '4px', gridTemplateAreas: "'. . k . .'" }}
+                sx={{
+                    display: 'grid', justifyContent: 'center', alignContent: 'center', gridTemplateAreas:
+                        "'c' 'e' 'a' 'd'", gap: '4px', mb: 1
+                }}
             >
+
                 <TextField
                     sx={{
-                        gridArea: 'k',
-                        mt: 2,
-                        mb: 2,
-                    }}
-                    id="1"
-                    label="Key"
-                    variant='outlined'
-                    onChange={(e) => {
-                        setKey(e.target.value)
-                        console.log(e.target.value)
-                    }}
-                    value={key}
-                    error={!isNumeric(key)}
-                    helperText={toBinary(key)}
-                />
-            </Grid>
-            <Grid
-                sx={{ display: 'grid', justifyContent: 'center', alignContent: 'center', gridTemplateColumns: '1fr 1fr 1fr', gap: '4px', mb: 1 }}
-            >
-                <TextField
-                    sx={{
+                        gridArea: 'c',
                         mt: 2,
                         mb: 2,
                     }}
@@ -93,26 +83,44 @@ export const ElGamalZpEncrypt = (props) => {
                     }}
                     value={textoEntrada}
                     error={!isNumeric(textoEntrada)}
-                    helperText={toBinary(textoEntrada)}
+                // helperText={toBinary(textoEntrada)}
                 />
-                <TextField
+                {/* <p sx={{ gridArea: 'h1' }}>c:</p> */}
+                <Box
                     sx={{
+                        border: '1px solid black',
+                        borderRadius: '5px',
+                        // width: '250px',
+                        overflow: 'scroll',
+                        // textOverflow: 'ellipsis',
+                        gridArea: 'e',
                         mt: 2,
                         mb: 2,
                     }}
                     id="3"
                     label="Cyphertext"
-                    variant='outlined'
-                    onChange={(e) => {
-                        setTextoEntrada(e.target.value)
-                        console.log(e.target.value)
+
+                >c: {c}</Box>
+                {/* <p sx={{ gridArea: 'h1' }}>c:</p> */}
+                <Box
+                    sx={{
+                        border: '1px solid black',
+                        borderRadius: '5px',
+                        // width: '250px',
+                        overflow: 'scroll',
+                        // textOverflow: 'ellipsis',
+                        gridArea: 'a',
+                        mt: 2,
+                        mb: 2,
                     }}
-                    value={textRecibido}
-                    disabled={true}
-                    helperText={toBinary(textRecibido)}
-                />
+                    id="3"
+                    label="Cyphertext"
+
+                >A: {A}</Box>
+
                 <TextField
                     sx={{
+                        gridArea: 'd',
                         mt: 2,
                         mb: 2,
                     }}
