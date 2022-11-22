@@ -319,9 +319,9 @@ const renderSwitch = (param1, param2, param3) => {
         case (param1 === "ElGamal - Zp" && param2 === "2"):
             return <ElGamalZpEncrypt />
 
-        case (param1 === "ElGamal - ECC" && param2 === "1"):
+        case (param1 === "ElGamal - ECC 25519" && param2 === "1"):
             return <ElGamalEccInfo />
-        case (param1 === "ElGamal - ECC" && param2 === "2"):
+        case (param1 === "ElGamal - ECC 25519" && param2 === "2"):
             return <ElGamalEccEncrypt />
 
         default:
