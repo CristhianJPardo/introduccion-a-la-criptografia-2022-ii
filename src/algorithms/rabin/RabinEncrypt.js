@@ -8,21 +8,31 @@ import { Divider, TextField } from '@mui/material';
 export const RabinEncrypt = (props) => {
 
     const [textoEntrada, setTextoEntrada] = useState("")
-    const [textRecibido, setTextoRecibido] = useState("")
+    const [textRecibido, setTextoRecibido] = useState({})
+    const [textEncriptado, setTextoEncriptado] = useState("")
     const [decipheredText, setDecipheredText] = useState("")
-    const [key, setKey] = useState("")
+    const [p, setP] = useState("")
+    const [q, setQ] = useState("")
+    // const [publicKeyE, setPublicKeyE] = useState("")
+    const [publicKeyN, setPublicKeyN] = useState("")
 
     const enviarTexto = async () => {
+
         const data = {
             text: textoEntrada
         }
         try {
             const resp = await axios.post(
-                "http://localhost:8000/upload_sdes_encrypt/"
-                + "?" + (new URLSearchParams({ key: key })).toString()
+                "http://localhost:8000/rabin_encrypt/"
+                + "?" + (new URLSearchParams({ p: p })).toString()
+                + "&" + (new URLSearchParams({ q: q })).toString()
                 , data)
-            setTextoRecibido(resp.data)
-            console.log(resp.data)
+            setTextoRecibido(resp.data);
+            setTextoEncriptado(resp.data.encrypted);
+            // setPublicKeyE(resp.data.publicKeyE);
+            setPublicKeyN(resp.data.publicKeyN);
+            console.log(resp.data);
+            console.log(textEncriptado);
 
         } catch (err) {
             console.error(err)
@@ -38,9 +48,13 @@ export const RabinEncrypt = (props) => {
 
     const clear = () => {
         setTextoEntrada("");
-        setTextoRecibido("");
+        setTextoRecibido({});
+        setTextoEncriptado("");
         setDecipheredText("");
-        setKey("")
+        setP("");
+        setQ("");
+        // setPublicKeyE("");
+        setPublicKeyN("")
     }
 
     const isNumeric = (str) => {
@@ -56,24 +70,41 @@ export const RabinEncrypt = (props) => {
     return (
         <Box>
             <Grid
-                sx={{ display: 'grid', gap: '4px', gridTemplateAreas: "'. . k . .'" }}
+                sx={{ display: 'grid', gap: '4px', gridTemplateAreas: "'. . k1 k2 .'" }}
             >
                 <TextField
                     sx={{
-                        gridArea: 'k',
+                        gridArea: 'k1',
                         mt: 2,
                         mb: 2,
                     }}
                     id="1"
-                    label="Key"
+                    label="p"
                     variant='outlined'
                     onChange={(e) => {
-                        setKey(e.target.value)
+                        setP(e.target.value)
                         console.log(e.target.value)
                     }}
-                    value={key}
-                    error={!isNumeric(key)}
-                    helperText={toBinary(key)}
+                    value={p}
+                    error={!isNumeric(p)}
+                // helperText={toBinary(p)}
+                />
+                <TextField
+                    sx={{
+                        gridArea: 'k2',
+                        mt: 2,
+                        mb: 2,
+                    }}
+                    id="2"
+                    label="q"
+                    variant='outlined'
+                    onChange={(e) => {
+                        setQ(e.target.value)
+                        console.log(e.target.value)
+                    }}
+                    value={q}
+                    error={!isNumeric(q)}
+                // helperText={toBinary(q)}
                 />
             </Grid>
             <Grid
@@ -84,7 +115,7 @@ export const RabinEncrypt = (props) => {
                         mt: 2,
                         mb: 2,
                     }}
-                    id="2"
+                    id="3"
                     label="Clear Text"
                     variant='outlined'
                     onChange={(e) => {
@@ -93,23 +124,7 @@ export const RabinEncrypt = (props) => {
                     }}
                     value={textoEntrada}
                     error={!isNumeric(textoEntrada)}
-                    helperText={toBinary(textoEntrada)}
-                />
-                <TextField
-                    sx={{
-                        mt: 2,
-                        mb: 2,
-                    }}
-                    id="3"
-                    label="Cyphertext"
-                    variant='outlined'
-                    onChange={(e) => {
-                        setTextoEntrada(e.target.value)
-                        console.log(e.target.value)
-                    }}
-                    value={textRecibido}
-                    disabled={true}
-                    helperText={toBinary(textRecibido)}
+                // helperText={toBinary(textoEntrada)}
                 />
                 <TextField
                     sx={{
@@ -117,6 +132,18 @@ export const RabinEncrypt = (props) => {
                         mb: 2,
                     }}
                     id="4"
+                    label="Cyphertext"
+                    variant='outlined'
+                    value={textEncriptado}
+                    disabled={true}
+                // helperText={toBinary(textRecibido)}
+                />
+                <TextField
+                    sx={{
+                        mt: 2,
+                        mb: 2,
+                    }}
+                    id="5"
                     label="Decypheredtext"
                     variant='outlined'
                     onChange={(e) => {
@@ -127,6 +154,22 @@ export const RabinEncrypt = (props) => {
                     disabled={true}
                 />
 
+            </Grid>
+            <Grid
+                sx={{ display: 'grid', gap: '4px', gridTemplateAreas: "'. . n . .'" }}
+            >
+                <TextField
+                    sx={{
+                        gridArea: 'n',
+                        mt: 2,
+                        mb: 2,
+                    }}
+                    id="6"
+                    label="Public Key n"
+                    variant='outlined'
+                    value={publicKeyN}
+                    disabled={true}
+                />
             </Grid>
             <Grid
                 sx={{ display: 'grid', gap: '4px', gridTemplateAreas: "'. b1 c1 b2 .'" }}
@@ -169,4 +212,3 @@ export const RabinEncrypt = (props) => {
         </Box>
     )
 }
-
